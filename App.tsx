@@ -1,14 +1,17 @@
 import * as React from 'react';
+import {Provider as PaperProvider} from 'react-native-paper';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
-import { NavigationContainer } from '@react-navigation/native';
+import {NavigationContainer} from '@react-navigation/native';
 import AppNavigator from 'navigation/AppNavigator';
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <SafeAreaProvider>
-        <AppNavigator />
-      </SafeAreaProvider>
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <PaperProvider>
+          <AppNavigator />
+        </PaperProvider>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 }
