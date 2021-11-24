@@ -10,6 +10,8 @@ import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import com.polkaapp.PolkaAppJSIPackage;
+import com.facebook.react.bridge.JSIModulePackage;
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -32,6 +34,12 @@ public class MainApplication extends Application implements ReactApplication {
         @Override
         protected String getJSMainModuleName() {
           return "index";
+        }
+
+        // TODO: Remove all of this when MMKV and Reanimated can be auto installed (maybe RN 0.65)
+        @Override
+        protected JSIModulePackage getJSIModulePackage() {
+          return new PolkaAppJSIPackage();
         }
       };
 
