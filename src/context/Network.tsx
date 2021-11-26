@@ -2,7 +2,7 @@ import React from 'react';
 import {noop} from 'lodash';
 import {usePersistedState} from 'hooks/usePersistedState';
 
-type SupportedNetwork = 'polkadot' | 'kusama'
+type SupportedNetwork = 'polkadot' | 'kusama';
 
 type Network = {
   name: string;
@@ -35,11 +35,7 @@ const KusamaNetwork: Network = {
   ss58Format: 2,
 };
 
-
-const availableNetworks = [
-  PolkadotNetwork,
-  KusamaNetwork,
-];
+const availableNetworks = [PolkadotNetwork, KusamaNetwork];
 
 const NetworkContext = React.createContext<NetworkContext>({
   currentNetwork: PolkadotNetwork,
@@ -52,22 +48,27 @@ type PropTypes = {
 };
 
 export function NetworkProvider({children}: PropTypes) {
-  const [currentNetwork, setCurrentNetwork] = usePersistedState<Network>('network', PolkadotNetwork);
+  const [currentNetwork, setCurrentNetwork] = usePersistedState<Network>(
+    'network',
+    PolkadotNetwork,
+  );
 
   const value = React.useMemo(
     () => ({currentNetwork, availableNetworks, select: setCurrentNetwork}),
     [currentNetwork, setCurrentNetwork],
   );
 
-  return <NetworkContext.Provider value={value}>{children}</NetworkContext.Provider>;
+  return (
+    <NetworkContext.Provider value={value}>{children}</NetworkContext.Provider>
+  );
 }
 
 export function useNetwork() {
-  const context = React.useContext(NetworkContext)
+  const context = React.useContext(NetworkContext);
 
-  if(!context) {
+  if (!context) {
     throw new Error('useNetwork must be used within a NetworkProvider');
   }
 
-  return context
+  return context;
 }

@@ -11,26 +11,26 @@ type ScreenProps = {
 };
 
 export function MyAccounts({navigation}: ScreenProps) {
-  const LeftContent = (props) => <Avatar.Icon {...props} icon="folder" />;
+  const LeftContent = props => <Avatar.Icon {...props} icon="folder" />;
 
   return (
     // <SafeView style={{backgroundColor: 'green'}}>
-      <Card style={{margin: 10}}>
-        <Card.Title
-          title="Card Title"
-          subtitle="Card Subtitle"
-          left={LeftContent}
-        />
-        <Card.Content>
-          <Title>Card title</Title>
-          <Paragraph>Card content</Paragraph>
-        </Card.Content>
-        <Card.Cover source={{uri: 'https://picsum.photos/700'}} />
-        <Card.Actions>
-          <Button>Cancel</Button>
-          <Button>Ok</Button>
-        </Card.Actions>
-      </Card>
+    <Card style={{margin: 10}}>
+      <Card.Title
+        title="Card Title"
+        subtitle="Card Subtitle"
+        left={LeftContent}
+      />
+      <Card.Content>
+        <Title>Card title</Title>
+        <Paragraph>Card content</Paragraph>
+      </Card.Content>
+      <Card.Cover source={{uri: 'https://picsum.photos/700'}} />
+      <Card.Actions>
+        <Button>Cancel</Button>
+        <Button>Ok</Button>
+      </Card.Actions>
+    </Card>
     // </SafeView>
   );
 }
