@@ -5,6 +5,7 @@ import {NavigationProp} from '@react-navigation/native';
 import {AccountsStackParamList} from 'navigation/navigation';
 // import {addressBook} from 'navigation/routeKeys';
 import {Card, Title, Paragraph, Button, Avatar} from 'rnpaper';
+import {mnemonicGenerate} from '@polkadot/util-crypto';
 
 type ScreenProps = {
   navigation: NavigationProp<AccountsStackParamList>;
@@ -12,6 +13,10 @@ type ScreenProps = {
 
 export function MyAccounts({navigation}: ScreenProps) {
   const LeftContent = props => <Avatar.Icon {...props} icon="folder" />;
+
+  const mnemonic = mnemonicGenerate()
+
+  console.log('Mnemonic ::::::::::::::: ', mnemonic)
 
   return (
     // <SafeView style={{backgroundColor: 'green'}}>
