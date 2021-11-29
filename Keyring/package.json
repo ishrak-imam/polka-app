@@ -1,0 +1,26 @@
+{
+  "name": "keyring",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "lint": "eslint --fix --ext .ts .",
+    "check-types": "tsc",
+    "build": "webpack"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "eslint": "^8.3.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "html-inline-script-webpack-plugin": "^2.0.3",
+    "html-webpack-plugin": "^5.5.0",
+    "prettier": "^2.5.0",
+    "ts-loader": "^9.2.6",
+    "typescript": "^4.5.2",
+    "webpack": "^5.64.4",
+    "webpack-cli": "^4.9.1"
+  }
+}
