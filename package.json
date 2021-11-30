@@ -9,7 +9,7 @@
     "test": "jest",
     "lint": "./node_modules/.bin/eslint --ignore-path .gitignore --fix --ext .ts,.tsx .",
     "nodeify": "./node_modules/.bin/rn-nodeify --install process,crypto,events,stream --hack --yarn",
-    "postinstall": "yarn nodeify"
+    "postinstall": "yarn nodeify && yarn --cwd ./keyring && yarn --cwd ./keyring build"
   },
   "dependencies": {
     "@polkadot/api": "6.7.2",

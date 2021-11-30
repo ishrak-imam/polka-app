@@ -1,12 +1,166 @@
-window.addEventListener('load', () => {
-  const header = document.createElement('h1');
-  header.innerText = 'Webpack❤️TS';
+import keyring from '@polkadot/ui-keyring';
+import {cryptoWaitReady, mnemonicGenerate, mnemonicValidate} from '@polkadot/util-crypto';
+import {keyringStore, initStore} from './keyringStore';
 
-  const body = document.querySelector('body');
-  body.appendChild(header);
+cryptoWaitReady().then(function () {
+  const userAgent = navigator.userAgent.toLocaleLowerCase();
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const windowDocument = (userAgent.includes('iphone') ? window : document) as any;
+
+  windowDocument.addEventListener('message', function (event: MessageEvent) {
+    const {type, payload} = JSON.parse(event.data);
+
+    switch (type) {
+      case 'INIT_STORE': {
+        initStore(payload.key, payload.value);
+        break;
+      }
+
+      case 'INIT_KEYRING': {
+        keyring.loadAll({type: 'sr25519', store: keyringStore});
+        break;
+      }
+
+      case 'SET_SS58_FORMAT': {
+        keyring.setSS58Format(payload.ss58Format);
+        break;
+      }
+
+      case 'GENERATE_MNEMONIC': {
+        const mnemonic = mnemonicGenerate();
+        windowDocument.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            type: 'GENERATE_MNEMONIC',
+            payload: {mnemonic},
+          }),
+        );
+        break;
+      }
+
+      case 'VALIDATE_MNEMONIC': {
+        const isValid = mnemonicValidate(payload.mnemonic);
+        windowDocument.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            type: 'VALIDATE_MNEMONIC',
+            payload: {isValid},
+          }),
+        );
+        break;
+      }
+
+      case 'GET_ACCOUNTS': {
+        const accounts = keyring.getAccounts();
+        windowDocument.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            type: 'GET_ACCOUNTS',
+            payload: {accounts},
+          }),
+        );
+        break;
+      }
+
+      case 'GET_ACCOUNT': {
+        const account = keyring.getAccount(payload.address);
+        windowDocument.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            type: 'GET_ACCOUNT',
+            payload: {account},
+          }),
+        );
+        break;
+      }
+
+      case 'GET_PAIRS': {
+        const pairs = keyring.getPairs();
+        windowDocument.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            type: 'GET_PAIRS',
+            payload: {pairs},
+          }),
+        );
+        break;
+      }
+
+      case 'GET_PAIR': {
+        const pair = keyring.getPair(payload.address);
+        windowDocument.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            type: 'GET_PAIR',
+            payload: {pair},
+          }),
+        );
+        break;
+      }
+
+      case 'ADD_ACCOUNT': {
+        const {json} = keyring.addUri(payload.mnemonic, payload.password, {
+          name: payload.name,
+          network: payload.network,
+          isFavorite: payload.isFavorite,
+          isExternal: payload.isExternal,
+        });
+        windowDocument.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            type: 'ADD_ACCOUNT',
+            payload: {account: json},
+          }),
+        );
+        break;
+      }
+
+      case 'RESTORE_ACCOUNT': {
+        const pair = keyring.restoreAccount(payload.json, payload.password);
+        keyring.saveAccountMeta(pair, {
+          network: payload.network,
+          isExternal: payload.isExternal,
+          isFavorite: payload.isFavorite,
+        });
+        const json = pair.toJson(payload.password);
+        windowDocument.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            type: 'RESTORE_ACCOUNT',
+            payload: {account: json},
+          }),
+        );
+        break;
+      }
+
+      case 'ADD_EXTERNAL_ACCOUNT': {
+        const {json} = keyring.addExternal(payload.address, {
+          network: payload.network,
+          isFavorite: payload.isFavorite,
+        });
+        windowDocument.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            type: 'ADD_EXTERNAL_ACCOUNT',
+            payload: {account: json},
+          }),
+        );
+        break;
+      }
+
+      case 'CREATE_ACCOUNT': {
+        const {address} = keyring.createFromUri(payload.mnemonic);
+        windowDocument.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            type: 'CREATE_ACCOUNT',
+            payload: {address},
+          }),
+        );
+        break;
+      }
+
+      case 'TOGGLE_FAVORITE': {
+        const pair = keyring.getPair(payload.address);
+        keyring.saveAccountMeta(pair, {...pair.meta, isFavorite: !pair.meta.isFavorite});
+        windowDocument.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            type: 'TOGGLE_FAVORITE',
+          }),
+        );
+        break;
+      }
+    }
+  } as (e: Event) => void);
 });
-
-const a = '123';
-function hello(): string {
-  return 123;
-}

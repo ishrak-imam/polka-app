@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
+    "noImplicitAny": true,
+    "allowSyntheticDefaultImports": true,
     "strict": true,
     "module": "ESNext",
     "target": "esnext",
     "allowJs": false,
-    "noEmit": true,
     "moduleResolution": "node",
     "typeRoots": ["./node_modules/@types"],
     "baseUrl": ".",
