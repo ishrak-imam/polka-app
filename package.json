@@ -8,6 +8,7 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "./node_modules/.bin/eslint --ignore-path .gitignore --fix --ext .ts,.tsx .",
+    "check-types": "./node_modules/.bin/tsc",
     "nodeify": "./node_modules/.bin/rn-nodeify --install process,crypto,events,stream --hack --yarn",
     "postinstall": "yarn nodeify && yarn --cwd ./keyring && yarn --cwd ./keyring build"
   },
@@ -23,6 +24,7 @@
     "react": "17.0.2",
     "react-native": "0.66.3",
     "react-native-crypto": "^2.1.0",
+    "react-native-fs": "^2.18.0",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-mmkv": "^1.5.3",
     "react-native-paper": "^4.10.1",
@@ -31,6 +33,7 @@
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.9.0",
     "react-native-vector-icons": "^9.0.0",
+    "react-native-webview": "^11.15.0",
     "readable-stream": "1.0.33",
     "stream-browserify": "^1.0.0"
   },

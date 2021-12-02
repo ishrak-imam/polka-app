@@ -1,31 +1,24 @@
 import React from 'react';
-import {SafeView} from 'components/SafeView';
-import {StyleSheet} from 'react-native';
 import {NavigationProp} from '@react-navigation/native';
 import {AccountsStackParamList} from 'navigation/navigation';
 // import {addressBook} from 'navigation/routeKeys';
-import {Card, Title, Paragraph, Button, Avatar} from 'rnpaper';
-import {mnemonicGenerate} from '@polkadot/util-crypto';
+import {Card, Title, Paragraph, Button} from 'rnpaper';
+import {StyleSheet} from 'react-native';
+import {useAccounts} from 'context/Accounts';
 
 type ScreenProps = {
   navigation: NavigationProp<AccountsStackParamList>;
 };
 
-export function MyAccounts({navigation}: ScreenProps) {
-  const LeftContent = props => <Avatar.Icon {...props} icon="folder" />;
+export function MyAccounts() {
+  const accounts = useAccounts();
 
-  const mnemonic = mnemonicGenerate()
-
-  console.log('Mnemonic ::::::::::::::: ', mnemonic)
+  console.log(accounts);
 
   return (
     // <SafeView style={{backgroundColor: 'green'}}>
-    <Card style={{margin: 10}}>
-      <Card.Title
-        title="Card Title"
-        subtitle="Card Subtitle"
-        left={LeftContent}
-      />
+    <Card style={styles.card}>
+      <Card.Title title="Card Title" subtitle="Card Subtitle" />
       <Card.Content>
         <Title>Card title</Title>
         <Paragraph>Card content</Paragraph>
@@ -41,8 +34,5 @@ export function MyAccounts({navigation}: ScreenProps) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
+  card: {margin: 10},
 });

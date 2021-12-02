@@ -2,7 +2,7 @@ import React from 'react';
 import {noop} from 'lodash';
 import {usePersistedState} from 'hooks/usePersistedState';
 
-type SupportedNetwork = 'polkadot' | 'kusama';
+export type SupportedNetwork = 'polkadot' | 'kusama';
 
 type Network = {
   name: string;
@@ -11,12 +11,6 @@ type Network = {
   isTestnet?: boolean;
   color?: string;
   ss58Format: number;
-};
-
-export type NetworkContext = {
-  currentNetwork: Network;
-  availableNetworks: Network[];
-  select: (network: Network) => void;
 };
 
 const PolkadotNetwork: Network = {
@@ -36,6 +30,12 @@ const KusamaNetwork: Network = {
 };
 
 const availableNetworks = [PolkadotNetwork, KusamaNetwork];
+
+type NetworkContext = {
+  currentNetwork: Network;
+  availableNetworks: Network[];
+  select: (network: Network) => void;
+};
 
 const NetworkContext = React.createContext<NetworkContext>({
   currentNetwork: PolkadotNetwork,
