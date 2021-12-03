@@ -12,13 +12,13 @@ export default function App() {
     <SafeAreaProvider>
       <NetworkProvider>
         <ApiProvider>
-          <AccountsProvider>
-            <NavigationContainer>
-              <ThemeProvider>
+          <ThemeProvider>
+            <AccountsProvider>
+              <NavigationContainer>
                 <AppNavigator />
-              </ThemeProvider>
-            </NavigationContainer>
-          </AccountsProvider>
+              </NavigationContainer>
+            </AccountsProvider>
+          </ThemeProvider>
         </ApiProvider>
       </NetworkProvider>
     </SafeAreaProvider>

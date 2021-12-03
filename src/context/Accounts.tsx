@@ -6,6 +6,7 @@ import {View, Platform, StyleSheet} from 'react-native';
 import RNFS from 'react-native-fs';
 import {decodeAddress} from '@polkadot/keyring';
 import {u8aToHex} from '@polkadot/util';
+import {LoadingView} from 'components/LoadingView';
 
 type PersistedAccount = {
   encoded: string;
@@ -45,10 +46,16 @@ type AddAccountPayload = {
 
 type AccountsContext = {
   accounts: Account[];
+  setCallback: (cb: (data: any) => void) => void;
+  generateMnemonic: () => void;
+  createAccount: (mnemonic: string) => void;
 };
 
 const AccountsContext = React.createContext<AccountsContext>({
   accounts: [],
+  setCallback: () => undefined,
+  generateMnemonic: () => undefined,
+  createAccount: () => undefined,
 });
 
 type PropTypes = {
@@ -113,12 +120,20 @@ export function AccountsProvider({children}: PropTypes) {
         break;
       }
     }
+
+    callback(data);
   };
 
   const webviewRef = React.useRef<any>();
   const [html, setHtml] = React.useState('');
   const [isWebviewLoaded, setIsWebviewLoaded] = React.useState(false);
   loadHtml(setHtml);
+
+  // to pass webview onMessage data to child components
+  let callback: (data: any) => void = () => ({});
+  const setCallback = (cb: (data: any) => void) => {
+    callback = cb;
+  };
 
   const initWebviewStore = () => {
     Object.keys(persistedAccounts).forEach(key => {
@@ -159,6 +174,14 @@ export function AccountsProvider({children}: PropTypes) {
     );
   };
 
+  const generateMnemonic = () => {
+    webviewRef.current.postMessage(
+      JSON.stringify({
+        type: 'GENERATE_MNEMONIC',
+      }),
+    );
+  };
+
   const createAccount = (mnemonic: string) => {
     webviewRef.current.postMessage(
       JSON.stringify({
@@ -195,10 +218,9 @@ export function AccountsProvider({children}: PropTypes) {
   }, [isWebviewLoaded, currentNetwork]);
 
   return (
-    <AccountsContext.Provider value={{accounts}}>
-      {children}
-      <View style={styles.webview}>
-        {html ? (
+    <>
+      {html ? (
+        <View style={styles.webview}>
           <WebView
             ref={webviewRef}
             onMessage={onMessage}
@@ -206,9 +228,22 @@ export function AccountsProvider({children}: PropTypes) {
             originWhitelist={['*']}
             source={{html}}
           />
-        ) : null}
-      </View>
-    </AccountsContext.Provider>
+        </View>
+      ) : null}
+      {isWebviewLoaded ? (
+        <AccountsContext.Provider
+          value={{
+            accounts,
+            setCallback,
+            generateMnemonic,
+            createAccount,
+          }}>
+          {children}
+        </AccountsContext.Provider>
+      ) : (
+        <LoadingView />
+      )}
+    </>
   );
 }
 
@@ -219,7 +254,7 @@ export function useAccounts() {
     throw new Error('useAccounts must be used within an AccountsProvider');
   }
 
-  return context.accounts;
+  return context;
 }
 
 const styles = StyleSheet.create({

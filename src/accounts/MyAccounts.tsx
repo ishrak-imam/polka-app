@@ -5,34 +5,52 @@ import {AccountsStackParamList} from 'navigation/navigation';
 import {Card, Title, Paragraph, Button} from 'rnpaper';
 import {StyleSheet} from 'react-native';
 import {useAccounts} from 'context/Accounts';
+import {Layout} from 'components/Layout';
 
 type ScreenProps = {
   navigation: NavigationProp<AccountsStackParamList>;
 };
 
 export function MyAccounts() {
-  const accounts = useAccounts();
+  const {accounts, setCallback, generateMnemonic, createAccount} =
+    useAccounts();
+  const [mnemonic, setMnemonic] = React.useState<String>('');
+  console.log(mnemonic);
 
-  console.log(accounts);
+  React.useEffect(() => {
+    generateMnemonic();
+  }, []);
+
+  const webviewOnMessage = (data: any) => {
+    const {type, payload} = data;
+    switch (type) {
+      case 'GENERATE_MNEMONIC': {
+        setMnemonic(payload.mnemonic);
+      }
+    }
+  };
+  setCallback(webviewOnMessage);
 
   return (
-    // <SafeView style={{backgroundColor: 'green'}}>
-    <Card style={styles.card}>
-      <Card.Title title="Card Title" subtitle="Card Subtitle" />
-      <Card.Content>
-        <Title>Card title</Title>
-        <Paragraph>Card content</Paragraph>
-      </Card.Content>
-      <Card.Cover source={{uri: 'https://picsum.photos/700'}} />
-      <Card.Actions>
-        <Button>Cancel</Button>
-        <Button>Ok</Button>
-      </Card.Actions>
-    </Card>
-    // </SafeView>
+    <Layout>
+      <Card style={styles.card}>
+        <Card.Title title="Card Title" subtitle="Card Subtitle" />
+        <Card.Content>
+          <Title>Card title</Title>
+          <Paragraph>Card content</Paragraph>
+        </Card.Content>
+        <Card.Cover source={{uri: 'https://picsum.photos/700'}} />
+        <Card.Actions>
+          <Button>Cancel</Button>
+          <Button>Ok</Button>
+        </Card.Actions>
+      </Card>
+    </Layout>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {margin: 10},
+  card: {
+    margin: 10,
+  },
 });
