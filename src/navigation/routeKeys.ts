@@ -1,6 +1,7 @@
 // accounts
 export const myAccounts = 'My Accounts' as const;
 export const addressBook = 'Address Book' as const;
+export const mnemonic = 'Mnemonic' as const;
 
 // network
 export const explorer = 'Explorer' as const;

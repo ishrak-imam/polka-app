@@ -15,6 +15,7 @@ import * as routeKeys from './routeKeys';
 
 import {MyAccounts} from 'accounts/MyAccounts';
 import {AddressBook} from 'accounts/AddressBook';
+import {Mnemonic} from 'accounts/Mnemonic';
 import {Explorer} from 'network/Explorer';
 import {Staking} from 'network/Staking';
 import {AppBar} from 'rnpaper/AppBar';
@@ -41,6 +42,7 @@ function AccountsNavigator() {
         name={routeKeys.addressBook}
         component={AddressBook}
       />
+      <AccountsStack.Screen name={routeKeys.mnemonic} component={Mnemonic} />
     </AccountsStack.Navigator>
   );
 }

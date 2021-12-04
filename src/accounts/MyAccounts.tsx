@@ -1,53 +1,62 @@
 import React from 'react';
 import {NavigationProp} from '@react-navigation/native';
 import {AccountsStackParamList} from 'navigation/navigation';
-// import {addressBook} from 'navigation/routeKeys';
-import {Card, Title, Paragraph, Button} from 'rnpaper';
+import {Provider, Portal, FAB, useTheme} from 'rnpaper';
 import {StyleSheet} from 'react-native';
 import {useAccounts} from 'context/Accounts';
-import {Layout} from 'components/Layout';
+// import {Layout} from 'components/Layout';
+import {mnemonic} from 'navigation/routeKeys';
 
 type ScreenProps = {
   navigation: NavigationProp<AccountsStackParamList>;
 };
 
-export function MyAccounts() {
-  const {accounts, setCallback, generateMnemonic, createAccount} =
-    useAccounts();
-  const [mnemonic, setMnemonic] = React.useState<String>('');
-  console.log(mnemonic);
-
-  React.useEffect(() => {
-    generateMnemonic();
-  }, []);
-
-  const webviewOnMessage = (data: any) => {
-    const {type, payload} = data;
-    switch (type) {
-      case 'GENERATE_MNEMONIC': {
-        setMnemonic(payload.mnemonic);
-      }
-    }
-  };
-  setCallback(webviewOnMessage);
+export function MyAccounts({navigation}: ScreenProps) {
+  const theme = useTheme();
+  const {accounts} = useAccounts();
 
   return (
-    <Layout>
-      <Card style={styles.card}>
-        <Card.Title title="Card Title" subtitle="Card Subtitle" />
-        <Card.Content>
-          <Title>Card title</Title>
-          <Paragraph>Card content</Paragraph>
-        </Card.Content>
-        <Card.Cover source={{uri: 'https://picsum.photos/700'}} />
-        <Card.Actions>
-          <Button>Cancel</Button>
-          <Button>Ok</Button>
-        </Card.Actions>
-      </Card>
-    </Layout>
+    <Provider theme={theme}>
+      {/* <Layout /> */}
+      <Buttons navigation={navigation} />
+    </Provider>
   );
 }
+
+const Buttons = ({navigation}: {navigation: ScreenProps['navigation']}) => {
+  const [state, setState] = React.useState({open: false});
+  const onStateChange = ({open}: {open: boolean}) => setState({open});
+  const {open} = state;
+
+  return (
+    <Portal>
+      <FAB.Group
+        visible={true}
+        open={open}
+        icon={open ? 'minus' : 'plus'}
+        actions={[
+          {
+            icon: 'import',
+            label: 'Import seed',
+            onPress: () => ({}),
+          },
+          {
+            icon: 'plus',
+            label: 'Add External Account',
+            onPress: () => ({}),
+          },
+          {
+            icon: 'key-plus',
+            label: 'Generate New Seed',
+            onPress: () => navigation.navigate(mnemonic),
+            small: false,
+          },
+        ]}
+        onStateChange={onStateChange}
+      />
+    </Portal>
+  );
+};
 
 const styles = StyleSheet.create({
   card: {
