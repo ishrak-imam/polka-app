@@ -16,6 +16,7 @@ import * as routeKeys from './routeKeys';
 import {MyAccounts} from 'accounts/MyAccounts';
 import {AddressBook} from 'accounts/AddressBook';
 import {Mnemonic} from 'accounts/Mnemonic';
+import {VerifyMnemonic} from 'accounts/VerifyMnemonic';
 import {Explorer} from 'network/Explorer';
 import {Staking} from 'network/Staking';
 import {AppBar} from 'rnpaper/AppBar';
@@ -43,6 +44,10 @@ function AccountsNavigator() {
         component={AddressBook}
       />
       <AccountsStack.Screen name={routeKeys.mnemonic} component={Mnemonic} />
+      <AccountsStack.Screen
+        name={routeKeys.verifyMnemonic}
+        component={VerifyMnemonic}
+      />
     </AccountsStack.Navigator>
   );
 }

@@ -5,10 +5,17 @@ import {NavigationProp} from '@react-navigation/native';
 import {AccountsStackParamList} from 'navigation/navigation';
 import {useAccounts} from 'context/Accounts';
 import {Padder, TextInput, Caption, View, Button} from 'rnpaper';
+import {verifyMnemonic} from 'navigation/routeKeys';
 
 type ScreenProps = {
   navigation: NavigationProp<AccountsStackParamList>;
 };
+
+function mnemonic_dev_log(mnemonic: string) {
+  if (__DEV__) {
+    console.log('Mnemonic ::: ', mnemonic);
+  }
+}
 
 export function Mnemonic({navigation}: ScreenProps) {
   const [mnemonic, setMnemonic] = React.useState('');
@@ -23,6 +30,7 @@ export function Mnemonic({navigation}: ScreenProps) {
     switch (type) {
       case 'GENERATE_MNEMONIC': {
         setMnemonic(payload.mnemonic);
+        mnemonic_dev_log(payload.mnemonic);
       }
     }
   };
@@ -30,7 +38,7 @@ export function Mnemonic({navigation}: ScreenProps) {
 
   return (
     <Layout style={styles.layout}>
-      <TextInput label="Mnemonic seed" disabled value={mnemonic} multiline />
+      <TextInput mode="flat" disabled value={mnemonic} multiline />
       <Padder scale={1} />
       <View style={styles.caption}>
         <Caption>
@@ -40,7 +48,10 @@ export function Mnemonic({navigation}: ScreenProps) {
         </Caption>
       </View>
       <View style={styles.button}>
-      <Button icon="skip-next" mode="outlined" onPress={() => console.log('Pressed')}>
+        <Button
+          icon="skip-next"
+          mode="outlined"
+          onPress={() => navigation.navigate(verifyMnemonic, {mnemonic})}>
           Next
         </Button>
       </View>
@@ -62,5 +73,5 @@ const styles = StyleSheet.create({
     bottom: 90,
     left: 0,
     right: 0,
-  }
+  },
 });
