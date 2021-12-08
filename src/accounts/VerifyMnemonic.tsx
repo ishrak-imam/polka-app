@@ -76,7 +76,7 @@ export function VerifyMnemonic({navigation, route}: ScreenProps) {
         </Button>
         <Button
           mode="outlined"
-          disabled={!isMnemonicVerified}
+          disabled={!isMnemonicVerified && !__DEV__}
           icon="arrow-right-circle"
           onPress={() => navigation.navigate(createAccount, {mnemonic})}>
           Next

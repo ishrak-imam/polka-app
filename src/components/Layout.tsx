@@ -1,23 +1,26 @@
 import React from 'react';
 import {useTheme} from 'context/Theme';
-import {StyleSheet, View, ViewStyle} from 'react-native';
+import {SafeAreaView} from 'react-native-safe-area-context';
+import {StyleSheet, ViewStyle} from 'react-native';
 
 type PropTypes = {
   children: React.ReactNode;
   style?: ViewStyle;
+  noTopEdges?: boolean;
 };
 
-export function Layout({children, style}: PropTypes) {
+export function Layout({children, style, noTopEdges = true}: PropTypes) {
   const {colors} = useTheme();
   return (
-    <View
+    <SafeAreaView
+      edges={noTopEdges ? ['left', 'right', 'bottom'] : undefined}
       style={{
         ...styles.safeView,
         ...style,
         backgroundColor: colors.background,
       }}>
       {children}
-    </View>
+    </SafeAreaView>
   );
 }
 

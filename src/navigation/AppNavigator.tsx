@@ -8,11 +8,14 @@ import {
 
 import type {
   AccountsStackParamList,
+  AddressBookStackParamList,
   NetworkStackParamList,
+  StackingStackParamList,
   DrawerParamList,
 } from './navigation';
 import * as routeKeys from './routeKeys';
 
+import {DrawerScreen} from './DrawerScreen';
 import {MyAccounts} from 'accounts/MyAccounts';
 import {AddressBook} from 'accounts/AddressBook';
 import {Mnemonic} from 'accounts/Mnemonic';
@@ -40,10 +43,6 @@ function AccountsNavigator() {
         name={routeKeys.myAccounts}
         component={MyAccounts}
       />
-      <AccountsStack.Screen
-        name={routeKeys.addressBook}
-        component={AddressBook}
-      />
       <AccountsStack.Screen name={routeKeys.mnemonic} component={Mnemonic} />
       <AccountsStack.Screen
         name={routeKeys.verifyMnemonic}
@@ -54,6 +53,29 @@ function AccountsNavigator() {
         component={CreateAccount}
       />
     </AccountsStack.Navigator>
+  );
+}
+
+const AddressBookStack =
+  createNativeStackNavigator<AddressBookStackParamList>();
+function AddressBookNavigator() {
+  return (
+    <AddressBookStack.Navigator
+      screenOptions={{
+        header: ({navigation, ...rest}) => (
+          <AppBar
+            navigation={
+              navigation as unknown as DrawerNavigationProp<ParamListBase>
+            }
+            {...rest}
+          />
+        ),
+      }}>
+      <AddressBookStack.Screen
+        name={routeKeys.addressBook}
+        component={AddressBook}
+      />
+    </AddressBookStack.Navigator>
   );
 }
 
@@ -72,22 +94,50 @@ function NetworkNavigator() {
         ),
       }}>
       <NetworkStack.Screen name={routeKeys.explorer} component={Explorer} />
-      <NetworkStack.Screen name={routeKeys.staking} component={Staking} />
     </NetworkStack.Navigator>
+  );
+}
+
+const StakingStack = createNativeStackNavigator<StackingStackParamList>();
+function StakingNavigator() {
+  return (
+    <StakingStack.Navigator
+      screenOptions={{
+        header: ({navigation, ...rest}) => (
+          <AppBar
+            navigation={
+              navigation as unknown as DrawerNavigationProp<ParamListBase>
+            }
+            {...rest}
+          />
+        ),
+      }}>
+      <StakingStack.Screen name={routeKeys.staking} component={Staking} />
+    </StakingStack.Navigator>
   );
 }
 
 const Drawer = createDrawerNavigator<DrawerParamList>();
 function DrawerNavigator() {
   return (
-    <Drawer.Navigator screenOptions={{headerShown: false}}>
+    <Drawer.Navigator
+      drawerContent={props => <DrawerScreen {...props} />}
+      screenOptions={{headerShown: false}}>
       <Drawer.Screen
         name={routeKeys.accountsNavigator}
         component={AccountsNavigator}
       />
       <Drawer.Screen
+        name={routeKeys.addressBookNavigator}
+        component={AddressBookNavigator}
+      />
+      <Drawer.Screen
         name={routeKeys.networkNavigator}
         component={NetworkNavigator}
+      />
+      <Drawer.Screen
+        name={routeKeys.stakingNavigator}
+        component={StakingNavigator}
       />
     </Drawer.Navigator>
   );

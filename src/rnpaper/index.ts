@@ -14,6 +14,10 @@ export {
   TextInput,
   Caption,
   List,
+  Headline,
+  Divider,
+  Drawer,
+  Switch,
 } from 'react-native-paper';
 
 export {View} from 'react-native';
