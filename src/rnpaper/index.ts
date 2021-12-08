@@ -13,6 +13,7 @@ export {
   FAB,
   TextInput,
   Caption,
+  List,
 } from 'react-native-paper';
 
 export {View} from 'react-native';

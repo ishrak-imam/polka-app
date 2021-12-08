@@ -6,6 +6,7 @@ import {AccountsStackParamList} from 'navigation/navigation';
 import {useAccounts} from 'context/Accounts';
 import {Padder, TextInput, Caption, View, Button} from 'rnpaper';
 import {verifyMnemonic} from 'navigation/routeKeys';
+import {useMountEffect} from 'hooks/useMountEffect';
 
 type ScreenProps = {
   navigation: NavigationProp<AccountsStackParamList>;
@@ -21,9 +22,7 @@ export function Mnemonic({navigation}: ScreenProps) {
   const [mnemonic, setMnemonic] = React.useState('');
   const {setCallback, generateMnemonic} = useAccounts();
 
-  React.useEffect(() => {
-    generateMnemonic();
-  }, []);
+  useMountEffect(generateMnemonic);
 
   const webviewOnMessage = (data: any) => {
     const {type, payload} = data;

@@ -1,10 +1,12 @@
 import React from 'react';
 import {NavigationProp} from '@react-navigation/native';
 import {AccountsStackParamList} from 'navigation/navigation';
-import {Provider, Portal, FAB, useTheme} from 'rnpaper';
-import {StyleSheet} from 'react-native';
-import {useAccounts} from 'context/Accounts';
-// import {Layout} from 'components/Layout';
+import {Provider, Portal, FAB, useTheme, List, View, Caption} from 'rnpaper';
+import Identicon from '@polkadot/reactnative-identicon/';
+import {stringShorten} from '@polkadot/util';
+import {StyleSheet, FlatList} from 'react-native';
+import {useAccounts, Account} from 'context/Accounts';
+import {Layout} from 'components/Layout';
 import {mnemonic} from 'navigation/routeKeys';
 
 type ScreenProps = {
@@ -17,11 +19,34 @@ export function MyAccounts({navigation}: ScreenProps) {
 
   return (
     <Provider theme={theme}>
-      {/* <Layout /> */}
+      <Layout style={styles.layout}>
+        <FlatList
+          data={accounts}
+          renderItem={({item: account}) => <AccountItem account={account} />}
+        />
+      </Layout>
       <Buttons navigation={navigation} />
     </Provider>
   );
 }
+
+type AccountItemProps = {
+  account: Account;
+};
+
+const AccountItem = ({account}: AccountItemProps) => {
+  return (
+    <List.Item
+      title={<Caption>{account.name}</Caption>}
+      left={() => (
+        <View style={styles.justifyCenter}>
+          <Identicon value={account.address} size={40} />
+        </View>
+      )}
+      description={stringShorten(account.address, 12)}
+    />
+  );
+};
 
 const Buttons = ({navigation}: {navigation: ScreenProps['navigation']}) => {
   const [state, setState] = React.useState({open: false});
@@ -59,7 +84,11 @@ const Buttons = ({navigation}: {navigation: ScreenProps['navigation']}) => {
 };
 
 const styles = StyleSheet.create({
-  card: {
-    margin: 10,
+  layout: {
+    paddingTop: 10,
+    paddingHorizontal: 10,
+  },
+  justifyCenter: {
+    justifyContent: 'center',
   },
 });

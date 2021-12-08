@@ -3,6 +3,7 @@ import {
   addressBook,
   mnemonic,
   verifyMnemonic,
+  createAccount,
   explorer,
   staking,
   accountsNavigator,
@@ -14,6 +15,7 @@ type AccountsStackParamList = {
   [addressBook]: undefined;
   [mnemonic]: undefined;
   [verifyMnemonic]: {mnemonic: string};
+  [createAccount]: {mnemonic: string};
 };
 
 type NetworkStackParamList = {

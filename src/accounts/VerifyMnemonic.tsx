@@ -3,9 +3,9 @@ import {StyleSheet} from 'react-native';
 import {Layout} from 'components/Layout';
 import {NavigationProp, RouteProp} from '@react-navigation/native';
 import {AccountsStackParamList} from 'navigation/navigation';
-import {verifyMnemonic} from 'navigation/routeKeys';
+import {verifyMnemonic, createAccount} from 'navigation/routeKeys';
 import {View, Button, Caption, TextInput, Padder} from 'rnpaper';
-import {useTheme} from 'context/ThemeContext';
+import {useTheme} from 'context/Theme';
 import {shuffle} from 'lodash';
 
 type ScreenProps = {
@@ -78,7 +78,7 @@ export function VerifyMnemonic({navigation, route}: ScreenProps) {
           mode="outlined"
           disabled={!isMnemonicVerified}
           icon="arrow-right-circle"
-          onPress={() => ({})}>
+          onPress={() => navigation.navigate(createAccount, {mnemonic})}>
           Next
         </Button>
       </View>

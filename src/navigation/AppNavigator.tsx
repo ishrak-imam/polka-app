@@ -17,6 +17,7 @@ import {MyAccounts} from 'accounts/MyAccounts';
 import {AddressBook} from 'accounts/AddressBook';
 import {Mnemonic} from 'accounts/Mnemonic';
 import {VerifyMnemonic} from 'accounts/VerifyMnemonic';
+import {CreateAccount} from 'accounts/CreateAccount';
 import {Explorer} from 'network/Explorer';
 import {Staking} from 'network/Staking';
 import {AppBar} from 'rnpaper/AppBar';
@@ -47,6 +48,10 @@ function AccountsNavigator() {
       <AccountsStack.Screen
         name={routeKeys.verifyMnemonic}
         component={VerifyMnemonic}
+      />
+      <AccountsStack.Screen
+        name={routeKeys.createAccount}
+        component={CreateAccount}
       />
     </AccountsStack.Navigator>
   );

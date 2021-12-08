@@ -1,5 +1,5 @@
 import React from 'react';
-import {useTheme} from 'context/ThemeContext';
+import {useTheme} from 'context/Theme';
 import {ActivityIndicator, StyleSheet, View} from 'react-native';
 
 export function LoadingView() {

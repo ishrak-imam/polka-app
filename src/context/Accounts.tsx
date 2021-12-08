@@ -27,7 +27,7 @@ type PersistedAccount = {
 
 type PersistedAccounts = Record<string, PersistedAccount>;
 
-type Account = {
+export type Account = {
   address: string;
   name: string;
   isFavorite: boolean;
@@ -49,6 +49,7 @@ type AccountsContext = {
   setCallback: (cb: (data: any) => void) => void;
   generateMnemonic: () => void;
   createAccount: (mnemonic: string) => void;
+  addAccount: (payload: AddAccountPayload) => void;
 };
 
 const AccountsContext = React.createContext<AccountsContext>({
@@ -56,6 +57,7 @@ const AccountsContext = React.createContext<AccountsContext>({
   setCallback: () => undefined,
   generateMnemonic: () => undefined,
   createAccount: () => undefined,
+  addAccount: () => undefined,
 });
 
 type PropTypes = {
@@ -80,9 +82,9 @@ export function AccountsProvider({children}: PropTypes) {
   const [persistedAccounts, setPersistedAccounts] =
     usePersistedState<PersistedAccounts>('accounts', {});
 
-  const prepareAccounts = (accounts: any) => {
+  const prepareAccounts = (keyringAccounts: any) => {
     setAccounts(
-      accounts.map((account: any) => {
+      keyringAccounts.map((account: any) => {
         const {
           address,
           meta: {name, isExternal, isFavorite, network},
@@ -117,6 +119,7 @@ export function AccountsProvider({children}: PropTypes) {
 
       case 'ADD_ACCOUNT': {
         pushAccount(payload.account);
+        getPairs();
         break;
       }
     }
@@ -208,6 +211,7 @@ export function AccountsProvider({children}: PropTypes) {
       setSS58Format(currentNetwork.ss58Format);
       getPairs();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isWebviewLoaded]);
 
   // set SS58 format
@@ -237,6 +241,7 @@ export function AccountsProvider({children}: PropTypes) {
             setCallback,
             generateMnemonic,
             createAccount,
+            addAccount,
           }}>
           {children}
         </AccountsContext.Provider>

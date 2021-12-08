@@ -2,7 +2,7 @@ import * as React from 'react';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {NavigationContainer} from '@react-navigation/native';
 import AppNavigator from 'navigation/AppNavigator';
-import {ThemeProvider} from 'context/ThemeContext';
+import {ThemeProvider} from 'context/Theme';
 import {NetworkProvider} from 'context/Network';
 import {ApiProvider} from 'context/Api';
 import {AccountsProvider} from 'context/Accounts';
