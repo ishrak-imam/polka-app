@@ -57,6 +57,7 @@ type AccountsContext = {
   createAccount: (mnemonic: string) => void;
   addAccount: (payload: AddAccountPayload) => void;
   addExternalAccount: (payload: AddExternalAccountPayload) => void;
+  toggleFavorite: (address: string) => void;
 };
 
 const AccountsContext = React.createContext<AccountsContext>({
@@ -66,6 +67,7 @@ const AccountsContext = React.createContext<AccountsContext>({
   createAccount: () => undefined,
   addAccount: () => undefined,
   addExternalAccount: () => undefined,
+  toggleFavorite: () => undefined,
 });
 
 type PropTypes = {
@@ -130,6 +132,10 @@ export function AccountsProvider({children}: PropTypes) {
         pushAccount(payload.account);
         getPairs();
         break;
+      }
+
+      case 'TOGGLE_FAVORITE': {
+        getPairs();
       }
     }
 
@@ -221,6 +227,15 @@ export function AccountsProvider({children}: PropTypes) {
     );
   };
 
+  const toggleFavorite = (address: string) => {
+    webviewRef.current.postMessage(
+      JSON.stringify({
+        type: 'TOGGLE_FAVORITE',
+        payload: {address},
+      }),
+    );
+  };
+
   // init
   React.useEffect(() => {
     if (isWebviewLoaded) {
@@ -261,6 +276,7 @@ export function AccountsProvider({children}: PropTypes) {
             createAccount,
             addAccount,
             addExternalAccount,
+            toggleFavorite,
           }}>
           {children}
         </AccountsContext.Provider>

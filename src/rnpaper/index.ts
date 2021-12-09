@@ -18,6 +18,7 @@ export {
   Divider,
   Drawer,
   Switch,
+  IconButton,
 } from 'react-native-paper';
 
 export {View} from 'react-native';

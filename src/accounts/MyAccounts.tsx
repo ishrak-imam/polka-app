@@ -16,6 +16,7 @@ import {
   TextInput,
   ErrorText,
   Button,
+  IconButton,
 } from 'rnpaper';
 import Identicon from '@polkadot/reactnative-identicon/';
 import {stringShorten} from '@polkadot/util';
@@ -36,7 +37,7 @@ type ScreenProps = {
 
 export function MyAccounts({navigation}: ScreenProps) {
   const theme = useTheme();
-  const {accounts, addExternalAccount} = useAccounts();
+  const {accounts, addExternalAccount, toggleFavorite} = useAccounts();
 
   const [isVisible, setIsVisible] = React.useState(false);
 
@@ -45,7 +46,9 @@ export function MyAccounts({navigation}: ScreenProps) {
       <Layout style={styles.layout}>
         <FlatList
           data={accounts}
-          renderItem={({item: account}) => <AccountItem account={account} />}
+          renderItem={({item: account}) => (
+            <AccountItem account={account} toggleFavorite={toggleFavorite} />
+          )}
         />
       </Layout>
       <Buttons navigation={navigation} setModalVisible={setIsVisible} />
@@ -129,18 +132,34 @@ const AddExternalAccountModal = ({
 
 type AccountItemProps = {
   account: Account;
+  toggleFavorite: (address: string) => void;
 };
 
-const AccountItem = ({account}: AccountItemProps) => {
+const AccountItem = ({account, toggleFavorite}: AccountItemProps) => {
+  const {colors} = useTheme();
+
   return (
     <List.Item
-      title={<Caption>{account.isExternal ? 'External account' : account.name}</Caption>}
+      title={
+        <Caption>
+          {account.isExternal ? 'External account' : account.name}
+        </Caption>
+      }
       left={() => (
         <View style={styles.justifyCenter}>
           <Identicon value={account.address} size={40} />
         </View>
       )}
       description={stringShorten(account.address, 12)}
+      right={() => (
+        <IconButton
+          onPress={() => {
+            toggleFavorite(account.address);
+          }}
+          color={account.isFavorite ? colors.accent : colors.disabled}
+          icon={account.isFavorite ? 'star' : 'star-outline'}
+        />
+      )}
     />
   );
 };
