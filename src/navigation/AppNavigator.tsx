@@ -21,7 +21,8 @@ import {AddressBook} from 'accounts/AddressBook';
 import {Mnemonic} from 'accounts/Mnemonic';
 import {VerifyMnemonic} from 'accounts/VerifyMnemonic';
 import {CreateAccount} from 'accounts/CreateAccount';
-import {ImportAccount} from 'accounts/ImportAccount';
+import {ImportSeed} from 'accounts/ImportSeed';
+import {ImportJson} from 'accounts/ImportJson';
 import {Explorer} from 'network/Explorer';
 import {Staking} from 'network/Staking';
 import {AppBar} from 'rnpaper/AppBar';
@@ -54,8 +55,12 @@ function AccountsNavigator() {
         component={CreateAccount}
       />
       <AccountsStack.Screen
-        name={routeKeys.importAccount}
-        component={ImportAccount}
+        name={routeKeys.importSeed}
+        component={ImportSeed}
+      />
+      <AccountsStack.Screen
+        name={routeKeys.importJson}
+        component={ImportJson}
       />
     </AccountsStack.Navigator>
   );

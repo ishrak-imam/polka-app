@@ -4,7 +4,8 @@ import {
   mnemonic,
   verifyMnemonic,
   createAccount,
-  importAccount,
+  importSeed,
+  importJson,
   explorer,
   staking,
   accountsNavigator,
@@ -18,7 +19,8 @@ type AccountsStackParamList = {
   [mnemonic]: undefined;
   [verifyMnemonic]: {mnemonic: string};
   [createAccount]: {mnemonic: string};
-  [importAccount]: undefined;
+  [importSeed]: undefined;
+  [importJson]: undefined;
 };
 
 type AddressBookStackParamList = {

@@ -66,18 +66,23 @@ export function VerifyMnemonic({navigation, route}: ScreenProps) {
         {'Verify your mnemonic by selecting the words in the correct order.'}
       </Caption>
       <Padder scale={1} />
-      <TextInput mode="flat" disabled value={selectedMnemonic} multiline />
+      <TextInput
+        style={styles.mnemonicInput}
+        mode="outlined"
+        disabled
+        value={selectedMnemonic}
+        multiline
+      />
       <Padder scale={2} />
       <WordSelector words={words} onSelect={onSelect} />
       <Padder scale={2} />
       <View style={styles.buttons}>
-        <Button mode="outlined" icon={'repeat'} onPress={onReset}>
+        <Button mode="outlined" onPress={onReset}>
           Reset
         </Button>
         <Button
           mode="outlined"
           disabled={!isMnemonicVerified && !__DEV__}
-          icon="arrow-right-circle"
           onPress={() => navigation.navigate(createAccount, {mnemonic})}>
           Next
         </Button>
@@ -130,5 +135,8 @@ const styles = StyleSheet.create({
     bottom: 90,
     left: 0,
     right: 0,
+  },
+  mnemonicInput: {
+    height: 80,
   },
 });

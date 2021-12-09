@@ -29,7 +29,7 @@ type ScreenProps = {
   navigation: NavigationProp<AccountsStackParamList>;
 };
 
-export function ImportAccount({navigation}: ScreenProps) {
+export function ImportSeed({navigation}: ScreenProps) {
   const {colors} = useTheme();
   const {currentNetwork} = useNetwork();
   const {setCallback, validateMnemonic, createAccount, addAccount} =

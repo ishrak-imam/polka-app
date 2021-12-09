@@ -49,7 +49,6 @@ export function Mnemonic({navigation}: ScreenProps) {
       </View>
       <View style={styles.button}>
         <Button
-          icon="skip-next"
           mode="outlined"
           onPress={() => navigation.navigate(verifyMnemonic, {mnemonic})}>
           Next

@@ -50,6 +50,14 @@ export type AddExternalAccountPayload = {
   isFavorite: boolean;
 };
 
+type RestoreAccountPayload = {
+  json: Record<string, string>;
+  password: string;
+  network: SupportedNetwork;
+  isFavorite: boolean;
+  isExternal: boolean;
+};
+
 type AccountsContext = {
   accounts: Account[];
   setCallback: (cb: (data: any) => void) => void;
@@ -58,6 +66,7 @@ type AccountsContext = {
   createAccount: (mnemonic: string) => void;
   addAccount: (payload: AddAccountPayload) => void;
   addExternalAccount: (payload: AddExternalAccountPayload) => void;
+  restoreAccount: (payload: RestoreAccountPayload) => void;
   toggleFavorite: (address: string) => void;
 };
 
@@ -70,6 +79,7 @@ const AccountsContext = React.createContext<AccountsContext>({
   addAccount: () => undefined,
   addExternalAccount: () => undefined,
   toggleFavorite: () => undefined,
+  restoreAccount: () => undefined,
 });
 
 type PropTypes = {
@@ -144,7 +154,8 @@ export function AccountsProvider({children}: PropTypes) {
       }
 
       case 'ADD_ACCOUNT':
-      case 'ADD_EXTERNAL_ACCOUNT': {
+      case 'ADD_EXTERNAL_ACCOUNT':
+      case 'RESTORE_ACCOUNT': {
         rnPersistAccounts(payload.account);
         getPairs();
         break;
@@ -244,6 +255,15 @@ export function AccountsProvider({children}: PropTypes) {
     );
   };
 
+  const restoreAccount = (payload: RestoreAccountPayload) => {
+    webviewRef.current.postMessage(
+      JSON.stringify({
+        type: 'RESTORE_ACCOUNT',
+        payload,
+      }),
+    );
+  };
+
   const toggleFavorite = (address: string) => {
     webviewRef.current.postMessage(
       JSON.stringify({
@@ -302,6 +322,7 @@ export function AccountsProvider({children}: PropTypes) {
             createAccount,
             addAccount,
             addExternalAccount,
+            restoreAccount,
             toggleFavorite,
             validateMnemonic,
           }}>
@@ -316,12 +337,17 @@ export function AccountsProvider({children}: PropTypes) {
 
 export function useAccounts() {
   const context = React.useContext(AccountsContext);
+  const {currentNetwork} = useNetwork();
 
   if (!context) {
     throw new Error('useAccounts must be used within an AccountsProvider');
   }
 
-  return context;
+  const networkAccounts = Object.values(context.accounts).filter(
+    account => account.network === currentNetwork.key,
+  );
+
+  return {...context, accounts: networkAccounts};
 }
 
 const styles = StyleSheet.create({

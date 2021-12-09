@@ -27,7 +27,7 @@ import {
   AddExternalAccountPayload,
 } from 'context/Accounts';
 import {Layout} from 'components/Layout';
-import {importAccount, mnemonic} from 'navigation/routeKeys';
+import {importJson, importSeed, mnemonic} from 'navigation/routeKeys';
 import {isAddressValid} from 'utils';
 import {useNetwork} from 'context/Network';
 
@@ -183,9 +183,16 @@ const Buttons = ({navigation, setModalVisible}: ButtonsProps) => {
         actions={[
           {
             icon: 'import',
-            label: 'Import seed',
+            label: 'Import Seed',
             onPress: () => {
-              navigation.navigate(importAccount);
+              navigation.navigate(importSeed);
+            },
+          },
+          {
+            icon: 'code-json',
+            label: 'Import Json',
+            onPress: () => {
+              navigation.navigate(importJson);
             },
           },
           {
