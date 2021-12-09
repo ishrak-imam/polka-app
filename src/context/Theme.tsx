@@ -42,8 +42,6 @@ export function ThemeProvider({children}: PropTypes) {
     [theme, toggleTheme],
   );
 
-  console.log('Theme ::::::: ', value.theme);
-
   return (
     <ThemeContext.Provider value={value}>
       <RNPaperProvider theme={value.theme === 'dark' ? DarkTheme : LightTheme}>

@@ -54,6 +54,7 @@ type AccountsContext = {
   accounts: Account[];
   setCallback: (cb: (data: any) => void) => void;
   generateMnemonic: () => void;
+  validateMnemonic: (mnemonic: string) => void;
   createAccount: (mnemonic: string) => void;
   addAccount: (payload: AddAccountPayload) => void;
   addExternalAccount: (payload: AddExternalAccountPayload) => void;
@@ -64,6 +65,7 @@ const AccountsContext = React.createContext<AccountsContext>({
   accounts: [],
   setCallback: () => undefined,
   generateMnemonic: () => undefined,
+  validateMnemonic: () => undefined,
   createAccount: () => undefined,
   addAccount: () => undefined,
   addExternalAccount: () => undefined,
@@ -125,11 +127,11 @@ export function AccountsProvider({children}: PropTypes) {
         ...persistedAccounts[key],
         meta: {
           ...persistedAccounts[key].meta,
-          isFavorite: !persistedAccounts[key].meta.isFavorite
-        }
+          isFavorite: !persistedAccounts[key].meta.isFavorite,
+        },
       },
-    })
-  }
+    });
+  };
 
   const onMessage = (event: WebViewMessageEvent) => {
     const data = JSON.parse(event.nativeEvent.data);
@@ -150,7 +152,7 @@ export function AccountsProvider({children}: PropTypes) {
 
       case 'TOGGLE_FAVORITE': {
         getPairs();
-        toggleFavoriteRnPersistedAccount(payload.address)
+        toggleFavoriteRnPersistedAccount(payload.address);
       }
     }
 
@@ -251,6 +253,15 @@ export function AccountsProvider({children}: PropTypes) {
     );
   };
 
+  const validateMnemonic = (mnemonic: string) => {
+    webviewRef.current.postMessage(
+      JSON.stringify({
+        type: 'VALIDATE_MNEMONIC',
+        payload: {mnemonic},
+      }),
+    );
+  };
+
   // init
   React.useEffect(() => {
     if (isWebviewLoaded) {
@@ -292,6 +303,7 @@ export function AccountsProvider({children}: PropTypes) {
             addAccount,
             addExternalAccount,
             toggleFavorite,
+            validateMnemonic,
           }}>
           {children}
         </AccountsContext.Provider>

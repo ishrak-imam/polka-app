@@ -1,28 +1,23 @@
 import React from 'react';
 import {StyleSheet, ScrollView} from 'react-native';
 import Identicon from '@polkadot/reactnative-identicon/';
-import {NavigationProp, RouteProp} from '@react-navigation/native';
+import {NavigationProp} from '@react-navigation/native';
 import {AccountsStackParamList} from 'navigation/navigation';
-import {createAccount, myAccounts} from 'navigation/routeKeys';
+import {Layout} from 'components/Layout';
 import {
-  View,
-  Button,
-  Caption,
   TextInput,
+  ErrorText,
   Padder,
   List,
+  View,
+  Caption,
   useTheme,
+  Button,
 } from 'rnpaper';
-import {useNetwork} from 'context/Network';
 import {useAccounts} from 'context/Accounts';
-import {Layout} from 'components/Layout';
 import zxcvbn from 'zxcvbn';
-import {useMountEffect} from 'hooks/useMountEffect';
-
-type ScreenProps = {
-  navigation: NavigationProp<AccountsStackParamList>;
-  route: RouteProp<AccountsStackParamList, typeof createAccount>;
-};
+import {useNetwork} from 'context/Network';
+import {myAccounts} from 'navigation/routeKeys';
 
 type Account = {
   name: string;
@@ -30,38 +25,45 @@ type Account = {
   confirmPassword: string;
 };
 
-export function CreateAccount({navigation, route}: ScreenProps) {
-  const {mnemonic} = route.params;
-  const {currentNetwork} = useNetwork();
-  const {
-    createAccount: createAccountFromSeed,
-    addAccount,
-    setCallback,
-  } = useAccounts();
-  const {colors} = useTheme();
+type ScreenProps = {
+  navigation: NavigationProp<AccountsStackParamList>;
+};
 
+export function ImportAccount({navigation}: ScreenProps) {
+  const {colors} = useTheme();
+  const {currentNetwork} = useNetwork();
+  const {setCallback, validateMnemonic, createAccount, addAccount} =
+    useAccounts();
+  const [seed, setSeed] = React.useState('');
+  const [seedStatus, setSeedStatus] = React.useState({
+    validating: false,
+    isValid: false,
+  });
+  const [address, setAddress] = React.useState('');
   const [account, setAccount] = React.useState<Account>({
     name: '',
     password: '',
     confirmPassword: '',
   });
-  const [address, setAddress] = React.useState('');
+
   const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
   const passwordStrength = zxcvbn(account.password).score;
 
   const isDisabled =
+    !seedStatus.isValid ||
     !account.name ||
     !account.password ||
     account.password !== account.confirmPassword ||
     passwordStrength < 3;
 
-  useMountEffect(() => {
-    createAccountFromSeed(mnemonic);
-  });
-
   const webviewOnMessage = (data: any) => {
     const {type, payload} = data;
     switch (type) {
+      case 'VALIDATE_MNEMONIC': {
+        setSeedStatus({validating: false, isValid: payload.isValid});
+        break;
+      }
+
       case 'CREATE_ACCOUNT': {
         setAddress(payload.address);
         break;
@@ -70,9 +72,23 @@ export function CreateAccount({navigation, route}: ScreenProps) {
   };
   setCallback(webviewOnMessage);
 
+  React.useEffect(() => {
+    if (seedStatus.isValid) {
+      createAccount(seed);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seed, seedStatus.isValid]);
+
+  React.useEffect(() => {
+    if (seed) {
+      validateMnemonic(seed);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [seed]);
+
   const onSubmit = () => {
     addAccount({
-      mnemonic,
+      mnemonic: seed,
       password: account.password,
       name: account.name,
       network: currentNetwork.key,
@@ -85,20 +101,43 @@ export function CreateAccount({navigation, route}: ScreenProps) {
   return (
     <Layout style={styles.layout}>
       <ScrollView>
-        <List.Item
-          title={() => (
-            <View style={styles.name}>
-              <Caption>{account.name}</Caption>
-            </View>
-          )}
-          left={() => (
-            <View style={styles.justifyCenter}>
-              <Identicon value={address} size={40} />
-            </View>
-          )}
-          description={address}
+        <View style={styles.identicon}>
+          {address ? (
+            <List.Item
+              title={() => (
+                <View style={styles.name}>
+                  <Caption>{account.name}</Caption>
+                </View>
+              )}
+              left={() => (
+                <View style={styles.justifyCenter}>
+                  <Identicon value={address} size={40} />
+                </View>
+              )}
+              description={address}
+            />
+          ) : null}
+        </View>
+        <Padder scale={0.5} />
+        <TextInput
+          style={styles.seedInput}
+          label={'Existing Seed'}
+          numberOfLines={3}
+          multiline={true}
+          value={seed}
+          onChangeText={_seed => {
+            setSeedStatus({...seedStatus, validating: true});
+            setSeed(_seed);
+          }}
+          editable
+          mode="outlined"
+          error={Boolean(seed) && !seedStatus.validating && !seedStatus.isValid}
         />
-        <TextInput mode="flat" disabled value={mnemonic} multiline />
+        <View style={styles.errorText}>
+          {Boolean(seed) && !seedStatus.validating && !seedStatus.isValid ? (
+            <ErrorText>{'Invalid Seed'}</ErrorText>
+          ) : null}
+        </View>
         <Padder scale={1} />
         <TextInput
           mode="outlined"
@@ -138,7 +177,7 @@ export function CreateAccount({navigation, route}: ScreenProps) {
         />
         <Padder scale={2} />
         <Button disabled={isDisabled} mode="outlined" onPress={onSubmit}>
-          Create Account
+          Import Account
         </Button>
       </ScrollView>
     </Layout>
@@ -155,5 +194,14 @@ const styles = StyleSheet.create({
   },
   name: {
     height: 20,
+  },
+  identicon: {
+    height: 80,
+  },
+  errorText: {
+    height: 30,
+  },
+  seedInput: {
+    height: 80,
   },
 });

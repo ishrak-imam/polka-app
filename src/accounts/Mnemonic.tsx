@@ -30,6 +30,7 @@ export function Mnemonic({navigation}: ScreenProps) {
       case 'GENERATE_MNEMONIC': {
         setMnemonic(payload.mnemonic);
         mnemonic_dev_log(payload.mnemonic);
+        break;
       }
     }
   };
