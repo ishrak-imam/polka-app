@@ -27,8 +27,8 @@ export function DrawerScreen({navigation}: DrawerContentComponentProps) {
 
   return (
     <Layout style={styles.layout} noTopEdges={false}>
-      <View style={styles.alignCenter}>
-        <Subheading>{currentNetwork.name}</Subheading>
+      <View style={styles.header}>
+        <Subheading style={{color: currentNetwork.color}}>{currentNetwork.name}</Subheading>
       </View>
       <Divider />
       <ScrollView>
@@ -82,7 +82,7 @@ export function DrawerScreen({navigation}: DrawerContentComponentProps) {
           />
           <Drawer.Item
             onPress={onSwitchNetwork}
-            label="Switch network"
+            label={`Switch to ${currentNetwork.key === 'polkadot' ? 'Kusama' : 'Polkadot'}`}
             icon="server-network"
           />
         </Drawer.Section>
@@ -96,7 +96,10 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingHorizontal: 10,
   },
-  alignCenter: {
-    alignItems: 'center',
+  header: {
+    height: 50,
+    // backgroundColor: 'green',
+    justifyContent: 'center',
+    paddingLeft: 15
   },
 });

@@ -17,7 +17,7 @@ const PolkadotNetwork: Network = {
   name: 'Polkadot',
   key: 'polkadot',
   ws: ['wss://rpc.polkadot.io'],
-  color: '#800000',
+  color: '#e50b7b',
   ss58Format: 0,
 };
 
@@ -25,7 +25,7 @@ const KusamaNetwork: Network = {
   name: 'Kusama',
   key: 'kusama',
   ws: ['wss://kusama.api.onfinality.io/public-ws'],
-  color: '#e6194B',
+  color: '#000000',
   ss58Format: 2,
 };
 
