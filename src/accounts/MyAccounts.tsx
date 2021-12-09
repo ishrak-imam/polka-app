@@ -1,13 +1,34 @@
 import React from 'react';
 import {NavigationProp} from '@react-navigation/native';
 import {AccountsStackParamList} from 'navigation/navigation';
-import {Provider, Portal, FAB, useTheme, List, View, Caption} from 'rnpaper';
+import {
+  Provider,
+  Portal,
+  FAB,
+  useTheme,
+  List,
+  View,
+  Caption,
+  Modal,
+  Card,
+  Padder,
+  Paragraph,
+  TextInput,
+  ErrorText,
+  Button,
+} from 'rnpaper';
 import Identicon from '@polkadot/reactnative-identicon/';
 import {stringShorten} from '@polkadot/util';
 import {StyleSheet, FlatList} from 'react-native';
-import {useAccounts, Account} from 'context/Accounts';
+import {
+  useAccounts,
+  Account,
+  AddExternalAccountPayload,
+} from 'context/Accounts';
 import {Layout} from 'components/Layout';
 import {mnemonic} from 'navigation/routeKeys';
+import {isAddressValid} from 'utils';
+import {useNetwork} from 'context/Network';
 
 type ScreenProps = {
   navigation: NavigationProp<AccountsStackParamList>;
@@ -15,7 +36,9 @@ type ScreenProps = {
 
 export function MyAccounts({navigation}: ScreenProps) {
   const theme = useTheme();
-  const {accounts} = useAccounts();
+  const {accounts, addExternalAccount} = useAccounts();
+
+  const [isVisible, setIsVisible] = React.useState(false);
 
   return (
     <Provider theme={theme}>
@@ -25,10 +48,84 @@ export function MyAccounts({navigation}: ScreenProps) {
           renderItem={({item: account}) => <AccountItem account={account} />}
         />
       </Layout>
-      <Buttons navigation={navigation} />
+      <Buttons navigation={navigation} setModalVisible={setIsVisible} />
+      <AddExternalAccountModal
+        visible={isVisible}
+        setModalVisible={setIsVisible}
+        addExternalAccount={addExternalAccount}
+      />
     </Provider>
   );
 }
+
+type AddExternalAccountProps = {
+  visible: boolean;
+  setModalVisible: (visible: boolean) => void;
+  addExternalAccount: (payload: AddExternalAccountPayload) => void;
+};
+
+const AddExternalAccountModal = ({
+  visible,
+  setModalVisible,
+  addExternalAccount,
+}: AddExternalAccountProps) => {
+  const {currentNetwork} = useNetwork();
+  const [address, setAddress] = React.useState('');
+  const [error, setError] = React.useState('');
+
+  const isDisabled = !address || Boolean(error);
+
+  React.useEffect(() => {
+    if (address) {
+      setError(
+        isAddressValid(currentNetwork, address) ? '' : 'Invalid address',
+      );
+    }
+  }, [address, currentNetwork]);
+
+  const onReset = () => {
+    setAddress('');
+    setError('');
+    setModalVisible(false);
+  };
+
+  const onAddAccount = () => {
+    addExternalAccount({
+      address,
+      network: currentNetwork.key,
+      isFavorite: false,
+    });
+    onReset();
+  };
+
+  return (
+    <Modal visible={visible} onDismiss={onReset}>
+      <Card style={styles.modalCard}>
+        <Paragraph>Add external account</Paragraph>
+        <Padder scale={0.5} />
+        <TextInput
+          multiline
+          numberOfLines={4}
+          mode="outlined"
+          placeholder="Paste address here, e.g. 167r...14h"
+          value={address}
+          onChangeText={text => setAddress(text)}
+          error={Boolean(error)}
+        />
+        {error ? <ErrorText>{error}</ErrorText> : null}
+        <Padder scale={2} />
+        <View style={styles.buttons}>
+          <Button mode="outlined" onPress={onReset}>
+            Cancel
+          </Button>
+          <Button disabled={isDisabled} mode="contained" onPress={onAddAccount}>
+            Add
+          </Button>
+        </View>
+      </Card>
+    </Modal>
+  );
+};
 
 type AccountItemProps = {
   account: Account;
@@ -37,7 +134,7 @@ type AccountItemProps = {
 const AccountItem = ({account}: AccountItemProps) => {
   return (
     <List.Item
-      title={<Caption>{account.name}</Caption>}
+      title={<Caption>{account.isExternal ? 'External account' : account.name}</Caption>}
       left={() => (
         <View style={styles.justifyCenter}>
           <Identicon value={account.address} size={40} />
@@ -48,7 +145,12 @@ const AccountItem = ({account}: AccountItemProps) => {
   );
 };
 
-const Buttons = ({navigation}: {navigation: ScreenProps['navigation']}) => {
+type ButtonsProps = {
+  navigation: ScreenProps['navigation'];
+  setModalVisible: (visible: boolean) => void;
+};
+
+const Buttons = ({navigation, setModalVisible}: ButtonsProps) => {
   const [state, setState] = React.useState({open: false});
   const onStateChange = ({open}: {open: boolean}) => setState({open});
   const {open} = state;
@@ -68,7 +170,9 @@ const Buttons = ({navigation}: {navigation: ScreenProps['navigation']}) => {
           {
             icon: 'plus',
             label: 'Add External Account',
-            onPress: () => ({}),
+            onPress: () => {
+              setModalVisible(true);
+            },
           },
           {
             icon: 'key-plus',
@@ -90,5 +194,12 @@ const styles = StyleSheet.create({
   },
   justifyCenter: {
     justifyContent: 'center',
+  },
+  modalCard: {
+    padding: 20,
+  },
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
   },
 });

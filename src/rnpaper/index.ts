@@ -21,6 +21,8 @@ export {
 } from 'react-native-paper';
 
 export {View} from 'react-native';
+export {Modal} from './Modal';
+export {ErrorText} from './ErrorText';
 
 export {AppBar} from './AppBar';
 export {Padder} from './Padder';

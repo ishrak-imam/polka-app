@@ -44,12 +44,19 @@ type AddAccountPayload = {
   isExternal: boolean;
 };
 
+export type AddExternalAccountPayload = {
+  address: string;
+  network: string;
+  isFavorite: boolean;
+};
+
 type AccountsContext = {
   accounts: Account[];
   setCallback: (cb: (data: any) => void) => void;
   generateMnemonic: () => void;
   createAccount: (mnemonic: string) => void;
   addAccount: (payload: AddAccountPayload) => void;
+  addExternalAccount: (payload: AddExternalAccountPayload) => void;
 };
 
 const AccountsContext = React.createContext<AccountsContext>({
@@ -58,6 +65,7 @@ const AccountsContext = React.createContext<AccountsContext>({
   generateMnemonic: () => undefined,
   createAccount: () => undefined,
   addAccount: () => undefined,
+  addExternalAccount: () => undefined,
 });
 
 type PropTypes = {
@@ -117,7 +125,8 @@ export function AccountsProvider({children}: PropTypes) {
         break;
       }
 
-      case 'ADD_ACCOUNT': {
+      case 'ADD_ACCOUNT':
+      case 'ADD_EXTERNAL_ACCOUNT': {
         pushAccount(payload.account);
         getPairs();
         break;
@@ -203,6 +212,15 @@ export function AccountsProvider({children}: PropTypes) {
     );
   };
 
+  const addExternalAccount = (payload: AddExternalAccountPayload) => {
+    webviewRef.current.postMessage(
+      JSON.stringify({
+        type: 'ADD_EXTERNAL_ACCOUNT',
+        payload,
+      }),
+    );
+  };
+
   // init
   React.useEffect(() => {
     if (isWebviewLoaded) {
@@ -242,6 +260,7 @@ export function AccountsProvider({children}: PropTypes) {
             generateMnemonic,
             createAccount,
             addAccount,
+            addExternalAccount,
           }}>
           {children}
         </AccountsContext.Provider>

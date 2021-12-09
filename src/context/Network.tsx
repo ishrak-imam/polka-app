@@ -4,7 +4,7 @@ import {usePersistedState} from 'hooks/usePersistedState';
 
 export type SupportedNetwork = 'polkadot' | 'kusama';
 
-type Network = {
+export type Network = {
   name: string;
   key: SupportedNetwork;
   ws: string[];
