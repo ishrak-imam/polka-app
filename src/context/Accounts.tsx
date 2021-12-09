@@ -110,12 +110,26 @@ export function AccountsProvider({children}: PropTypes) {
     );
   };
 
-  const pushAccount = (account: any) => {
+  const rnPersistAccounts = (account: any) => {
     setPersistedAccounts({
       ...persistedAccounts,
       [`account:${addressToHex(account.address)}`]: account,
     });
   };
+
+  const toggleFavoriteRnPersistedAccount = (address: string) => {
+    const key = `account:${addressToHex(address)}`;
+    setPersistedAccounts({
+      ...persistedAccounts,
+      [key]: {
+        ...persistedAccounts[key],
+        meta: {
+          ...persistedAccounts[key].meta,
+          isFavorite: !persistedAccounts[key].meta.isFavorite
+        }
+      },
+    })
+  }
 
   const onMessage = (event: WebViewMessageEvent) => {
     const data = JSON.parse(event.nativeEvent.data);
@@ -129,13 +143,14 @@ export function AccountsProvider({children}: PropTypes) {
 
       case 'ADD_ACCOUNT':
       case 'ADD_EXTERNAL_ACCOUNT': {
-        pushAccount(payload.account);
+        rnPersistAccounts(payload.account);
         getPairs();
         break;
       }
 
       case 'TOGGLE_FAVORITE': {
         getPairs();
+        toggleFavoriteRnPersistedAccount(payload.address)
       }
     }
 

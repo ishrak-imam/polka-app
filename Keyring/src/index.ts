@@ -160,6 +160,7 @@ cryptoWaitReady().then(function () {
         window.ReactNativeWebView.postMessage(
           JSON.stringify({
             type: 'TOGGLE_FAVORITE',
+            payload: {address: payload.address}
           }),
         );
         break;
