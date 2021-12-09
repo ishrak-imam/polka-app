@@ -40,12 +40,12 @@ export function ApiProvider({children}: {children: React.ReactNode}) {
     dispatch({type: 'CONNECT'});
 
     function handleConnect() {
-      console.log('ChainApiContext: Api connected');
+      console.log('API: Api connected');
       dispatch({type: 'ON_CONNECT'});
     }
 
     function handleReady() {
-      console.log('ChainApiContext: Api ready at', wsAddress);
+      console.log('API: Api ready at', wsAddress);
       dispatch({
         type: 'ON_READY',
         payload: apiPromise,
@@ -53,12 +53,12 @@ export function ApiProvider({children}: {children: React.ReactNode}) {
     }
 
     function handleDisconnect() {
-      console.log('ChainApiContext: Api disconnected', wsAddress);
+      console.log('API: Api disconnected', wsAddress);
       dispatch({type: 'ON_DISCONNECT'});
     }
 
     function handleError(error: unknown) {
-      console.log('ChainApiContext: Api error at', wsAddress, error);
+      console.log('API: Api error at', wsAddress, error);
       dispatch({type: 'ON_ERROR'});
     }
 
