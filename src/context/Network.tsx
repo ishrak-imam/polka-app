@@ -29,17 +29,17 @@ const KusamaNetwork: Network = {
   ss58Format: 2,
 };
 
-const availableNetworks = [PolkadotNetwork, KusamaNetwork];
-
 type NetworkContext = {
   currentNetwork: Network;
-  availableNetworks: Network[];
+  polkadotNetwork: Network;
+  kusamaNetwork: Network;
   select: (network: Network) => void;
 };
 
 const NetworkContext = React.createContext<NetworkContext>({
   currentNetwork: PolkadotNetwork,
-  availableNetworks: availableNetworks,
+  polkadotNetwork: PolkadotNetwork,
+  kusamaNetwork: KusamaNetwork,
   select: noop,
 });
 
@@ -54,7 +54,7 @@ export function NetworkProvider({children}: PropTypes) {
   );
 
   const value = React.useMemo(
-    () => ({currentNetwork, availableNetworks, select: setCurrentNetwork}),
+    () => ({currentNetwork, polkadotNetwork: PolkadotNetwork, kusamaNetwork: KusamaNetwork, select: setCurrentNetwork}),
     [currentNetwork, setCurrentNetwork],
   );
 

@@ -19,6 +19,7 @@ export {
   Drawer,
   Switch,
   IconButton,
+  Subheading,
 } from 'react-native-paper';
 
 export {View} from 'react-native';

@@ -2,7 +2,7 @@ import React from 'react';
 import {DrawerContentComponentProps} from '@react-navigation/drawer';
 import {StyleSheet, ScrollView} from 'react-native';
 import {Layout} from 'components/Layout';
-import {View, Headline, Divider, Drawer, Switch} from 'rnpaper';
+import {View, Subheading, Divider, Drawer, Switch} from 'rnpaper';
 import {
   accountsNavigator,
   addressBook,
@@ -14,21 +14,27 @@ import {
   stakingNavigator,
 } from './routeKeys';
 import {useTheme} from 'context/Theme';
+import { useNetwork } from 'context/Network';
 
 export function DrawerScreen({navigation}: DrawerContentComponentProps) {
+  const {currentNetwork, polkadotNetwork, kusamaNetwork, select} = useNetwork()
   const {theme, toggleTheme} = useTheme();
   const [activeScreen, setActiveScreen] = React.useState<string>(myAccounts);
+
+  const onSwitchNetwork = () => {
+    select(currentNetwork.key === 'polkadot' ? kusamaNetwork : polkadotNetwork)
+  }
 
   return (
     <Layout style={styles.layout} noTopEdges={false}>
       <View style={styles.alignCenter}>
-        <Headline>{'POLKA'}</Headline>
+        <Subheading>{currentNetwork.name}</Subheading>
       </View>
       <Divider />
       <ScrollView>
         <Drawer.Section title="Accounts">
           <Drawer.Item
-            label="My Accounts"
+            label="My accounts"
             icon="account-details"
             active={activeScreen === myAccounts}
             onPress={() => {
@@ -37,7 +43,7 @@ export function DrawerScreen({navigation}: DrawerContentComponentProps) {
             }}
           />
           <Drawer.Item
-            label="Address Book"
+            label="Address book"
             icon="book-open"
             active={activeScreen === addressBook}
             onPress={() => {
@@ -73,6 +79,11 @@ export function DrawerScreen({navigation}: DrawerContentComponentProps) {
             right={() => (
               <Switch value={theme === 'dark'} onValueChange={toggleTheme} />
             )}
+          />
+          <Drawer.Item
+            onPress={onSwitchNetwork}
+            label="Switch network"
+            icon="server-network"
           />
         </Drawer.Section>
       </ScrollView>
