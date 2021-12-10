@@ -21,11 +21,7 @@ import {
 import Identicon from '@polkadot/reactnative-identicon/';
 import {stringShorten} from '@polkadot/util';
 import {StyleSheet, FlatList} from 'react-native';
-import {
-  useAccounts,
-  Account,
-  AddExternalAccountPayload,
-} from 'context/Accounts';
+import {useAccounts, Account, AddExternalAccountPayload} from 'context/Accounts';
 import {Layout} from 'components/Layout';
 import {importJson, importSeed, mnemonic} from 'navigation/routeKeys';
 import {isAddressValid} from 'utils';
@@ -46,9 +42,7 @@ export function MyAccounts({navigation}: ScreenProps) {
       <Layout style={styles.layout}>
         <FlatList
           data={accounts}
-          renderItem={({item: account}) => (
-            <AccountItem account={account} toggleFavorite={toggleFavorite} />
-          )}
+          renderItem={({item: account}) => <AccountItem account={account} toggleFavorite={toggleFavorite} />}
         />
       </Layout>
       <Buttons navigation={navigation} setModalVisible={setIsVisible} />
@@ -67,11 +61,7 @@ type AddExternalAccountProps = {
   addExternalAccount: (payload: AddExternalAccountPayload) => void;
 };
 
-const AddExternalAccountModal = ({
-  visible,
-  setModalVisible,
-  addExternalAccount,
-}: AddExternalAccountProps) => {
+const AddExternalAccountModal = ({visible, setModalVisible, addExternalAccount}: AddExternalAccountProps) => {
   const {currentNetwork} = useNetwork();
   const [address, setAddress] = React.useState('');
   const [error, setError] = React.useState('');
@@ -80,9 +70,7 @@ const AddExternalAccountModal = ({
 
   React.useEffect(() => {
     if (address) {
-      setError(
-        isAddressValid(currentNetwork, address) ? '' : 'Invalid address',
-      );
+      setError(isAddressValid(currentNetwork, address) ? '' : 'Invalid address');
     }
   }, [address, currentNetwork]);
 
@@ -112,7 +100,7 @@ const AddExternalAccountModal = ({
           mode="outlined"
           placeholder="Paste address here, e.g. 167r...14h"
           value={address}
-          onChangeText={text => setAddress(text)}
+          onChangeText={(text) => setAddress(text)}
           error={Boolean(error)}
         />
         {error ? <ErrorText>{error}</ErrorText> : null}
@@ -140,11 +128,7 @@ const AccountItem = ({account, toggleFavorite}: AccountItemProps) => {
 
   return (
     <List.Item
-      title={
-        <Caption>
-          {account.isExternal ? 'External account' : account.name}
-        </Caption>
-      }
+      title={<Caption>{account.isExternal ? 'External account' : account.name}</Caption>}
       left={() => (
         <View style={styles.justifyCenter}>
           <Identicon value={account.address} size={40} />

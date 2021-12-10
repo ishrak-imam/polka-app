@@ -101,8 +101,7 @@ async function loadHtml(setHtml: (html: string) => void) {
 export function AccountsProvider({children}: PropTypes) {
   const {currentNetwork} = useNetwork();
   const [accounts, setAccounts] = React.useState<Account[]>([]);
-  const [persistedAccounts, setPersistedAccounts] =
-    usePersistedState<PersistedAccounts>('accounts', {});
+  const [persistedAccounts, setPersistedAccounts] = usePersistedState<PersistedAccounts>('accounts', {});
 
   const prepareAccounts = (keyringAccounts: any) => {
     setAccounts(
@@ -182,7 +181,7 @@ export function AccountsProvider({children}: PropTypes) {
   };
 
   const initWebviewStore = () => {
-    Object.keys(persistedAccounts).forEach(key => {
+    Object.keys(persistedAccounts).forEach((key) => {
       webviewRef.current.postMessage(
         JSON.stringify({
           type: 'INIT_STORE',
@@ -343,9 +342,7 @@ export function useAccounts() {
     throw new Error('useAccounts must be used within an AccountsProvider');
   }
 
-  const networkAccounts = Object.values(context.accounts).filter(
-    account => account.network === currentNetwork.key,
-  );
+  const networkAccounts = Object.values(context.accounts).filter((account) => account.network === currentNetwork.key);
 
   return {...context, accounts: networkAccounts};
 }

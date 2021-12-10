@@ -101,8 +101,7 @@
   },
   "lint-staged": {
     "src/*.{ts,tsx}": [
-      "yarn lint",
-      "yarn prettier"
+      "yarn lint"
     ]
   }
 }

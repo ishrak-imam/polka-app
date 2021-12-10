@@ -2,18 +2,8 @@ import React from 'react';
 import {StyleSheet} from 'react-native';
 import {Layout} from 'components/Layout';
 import Identicon from '@polkadot/reactnative-identicon/';
-import {
-  Caption,
-  Padder,
-  List,
-  Button,
-  View,
-  TextInput,
-  useTheme,
-} from 'rnpaper';
-import DocumentPicker, {
-  DocumentPickerResponse,
-} from 'react-native-document-picker';
+import {Caption, Padder, List, Button, View, TextInput, useTheme} from 'rnpaper';
+import DocumentPicker, {DocumentPickerResponse} from 'react-native-document-picker';
 import RNFS from 'react-native-fs';
 import {useAccounts} from 'context/Accounts';
 import {useNetwork} from 'context/Network';
@@ -84,11 +74,7 @@ export function ImportJson({navigation}: ScreenProps) {
 
   return (
     <Layout style={styles.layout}>
-      <Caption>
-        {
-          'Supply a backed-up JSON file, encrypted with your account-specific password.'
-        }
-      </Caption>
+      <Caption>{'Supply a backed-up JSON file, encrypted with your account-specific password.'}</Caption>
       <Padder scale={0.5} />
       <View style={styles.filePicker}>
         {parsedJson ? (

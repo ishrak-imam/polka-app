@@ -11,10 +11,7 @@ type ModalProps = {
 export function Modal({visible, onDismiss, children}: ModalProps) {
   return (
     <Portal>
-      <RNPaperModal
-        visible={visible}
-        onDismiss={onDismiss}
-        contentContainerStyle={styles.modal}>
+      <RNPaperModal visible={visible} onDismiss={onDismiss} contentContainerStyle={styles.modal}>
         {children}
       </RNPaperModal>
     </Portal>

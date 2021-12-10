@@ -4,15 +4,7 @@ import Identicon from '@polkadot/reactnative-identicon/';
 import {NavigationProp, RouteProp} from '@react-navigation/native';
 import {AccountsStackParamList} from 'navigation/navigation';
 import {createAccount, myAccounts} from 'navigation/routeKeys';
-import {
-  View,
-  Button,
-  Caption,
-  TextInput,
-  Padder,
-  List,
-  useTheme,
-} from 'rnpaper';
+import {View, Button, Caption, TextInput, Padder, List, useTheme} from 'rnpaper';
 import {useNetwork} from 'context/Network';
 import {useAccounts} from 'context/Accounts';
 import {Layout} from 'components/Layout';
@@ -33,11 +25,7 @@ type Account = {
 export function CreateAccount({navigation, route}: ScreenProps) {
   const {mnemonic} = route.params;
   const {currentNetwork} = useNetwork();
-  const {
-    createAccount: createAccountFromSeed,
-    addAccount,
-    setCallback,
-  } = useAccounts();
+  const {createAccount: createAccountFromSeed, addAccount, setCallback} = useAccounts();
   const {colors} = useTheme();
 
   const [account, setAccount] = React.useState<Account>({
@@ -50,10 +38,7 @@ export function CreateAccount({navigation, route}: ScreenProps) {
   const passwordStrength = zxcvbn(account.password).score;
 
   const isDisabled =
-    !account.name ||
-    !account.password ||
-    account.password !== account.confirmPassword ||
-    passwordStrength < 3;
+    !account.name || !account.password || account.password !== account.confirmPassword || passwordStrength < 3;
 
   useMountEffect(() => {
     createAccountFromSeed(mnemonic);
@@ -104,14 +89,14 @@ export function CreateAccount({navigation, route}: ScreenProps) {
           mode="outlined"
           label={'Descriptive name for the account'}
           value={account.name}
-          onChangeText={text => setAccount({...account, name: text})}
+          onChangeText={(text) => setAccount({...account, name: text})}
         />
         <Padder scale={1} />
         <TextInput
           secureTextEntry={!isPasswordVisible}
           label={'New password for the account'}
           value={account.password}
-          onChangeText={text => {
+          onChangeText={(text) => {
             setAccount({...account, password: text});
           }}
           right={
@@ -130,11 +115,8 @@ export function CreateAccount({navigation, route}: ScreenProps) {
           secureTextEntry={!isPasswordVisible}
           label={'Confirm password'}
           value={account.confirmPassword}
-          onChangeText={text => setAccount({...account, confirmPassword: text})}
-          error={
-            Boolean(account.confirmPassword) &&
-            account.password !== account.confirmPassword
-          }
+          onChangeText={(text) => setAccount({...account, confirmPassword: text})}
+          error={Boolean(account.confirmPassword) && account.password !== account.confirmPassword}
         />
         <Padder scale={2} />
         <Button disabled={isDisabled} mode="outlined" onPress={onSubmit}>

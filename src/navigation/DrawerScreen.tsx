@@ -28,9 +28,7 @@ export function DrawerScreen({navigation}: DrawerContentComponentProps) {
   return (
     <Layout style={styles.layout} noTopEdges={false}>
       <View style={styles.header}>
-        <Subheading style={{color: currentNetwork.color}}>
-          {currentNetwork.name}
-        </Subheading>
+        <Subheading style={{color: currentNetwork.color}}>{currentNetwork.name}</Subheading>
       </View>
       <Divider />
       <ScrollView>
@@ -78,15 +76,11 @@ export function DrawerScreen({navigation}: DrawerContentComponentProps) {
           <Drawer.Item
             label="Dark theme"
             icon="brightness-6"
-            right={() => (
-              <Switch value={theme === 'dark'} onValueChange={toggleTheme} />
-            )}
+            right={() => <Switch value={theme === 'dark'} onValueChange={toggleTheme} />}
           />
           <Drawer.Item
             onPress={onSwitchNetwork}
-            label={`Switch to ${
-              currentNetwork.key === 'polkadot' ? 'Kusama' : 'Polkadot'
-            }`}
+            label={`Switch to ${currentNetwork.key === 'polkadot' ? 'Kusama' : 'Polkadot'}`}
             icon="server-network"
           />
         </Drawer.Section>

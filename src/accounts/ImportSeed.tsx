@@ -4,16 +4,7 @@ import Identicon from '@polkadot/reactnative-identicon/';
 import {NavigationProp} from '@react-navigation/native';
 import {AccountsStackParamList} from 'navigation/navigation';
 import {Layout} from 'components/Layout';
-import {
-  TextInput,
-  ErrorText,
-  Padder,
-  List,
-  View,
-  Caption,
-  useTheme,
-  Button,
-} from 'rnpaper';
+import {TextInput, ErrorText, Padder, List, View, Caption, useTheme, Button} from 'rnpaper';
 import {useAccounts} from 'context/Accounts';
 import zxcvbn from 'zxcvbn';
 import {useNetwork} from 'context/Network';
@@ -32,8 +23,7 @@ type ScreenProps = {
 export function ImportSeed({navigation}: ScreenProps) {
   const {colors} = useTheme();
   const {currentNetwork} = useNetwork();
-  const {setCallback, validateMnemonic, createAccount, addAccount} =
-    useAccounts();
+  const {setCallback, validateMnemonic, createAccount, addAccount} = useAccounts();
   const [seed, setSeed] = React.useState('');
   const [seedStatus, setSeedStatus] = React.useState({
     validating: false,
@@ -125,7 +115,7 @@ export function ImportSeed({navigation}: ScreenProps) {
           numberOfLines={3}
           multiline={true}
           value={seed}
-          onChangeText={_seed => {
+          onChangeText={(_seed) => {
             setSeedStatus({...seedStatus, validating: true});
             setSeed(_seed);
           }}
@@ -143,14 +133,14 @@ export function ImportSeed({navigation}: ScreenProps) {
           mode="outlined"
           label={'Descriptive name for the account'}
           value={account.name}
-          onChangeText={text => setAccount({...account, name: text})}
+          onChangeText={(text) => setAccount({...account, name: text})}
         />
         <Padder scale={1} />
         <TextInput
           secureTextEntry={!isPasswordVisible}
           label={'New password for the account'}
           value={account.password}
-          onChangeText={text => {
+          onChangeText={(text) => {
             setAccount({...account, password: text});
           }}
           right={
@@ -169,11 +159,8 @@ export function ImportSeed({navigation}: ScreenProps) {
           secureTextEntry={!isPasswordVisible}
           label={'Confirm password'}
           value={account.confirmPassword}
-          onChangeText={text => setAccount({...account, confirmPassword: text})}
-          error={
-            Boolean(account.confirmPassword) &&
-            account.password !== account.confirmPassword
-          }
+          onChangeText={(text) => setAccount({...account, confirmPassword: text})}
+          error={Boolean(account.confirmPassword) && account.password !== account.confirmPassword}
         />
         <Padder scale={2} />
         <Button disabled={isDisabled} mode="outlined" onPress={onSubmit}>

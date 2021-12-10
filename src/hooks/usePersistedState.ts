@@ -1,19 +1,10 @@
 import {useState, useCallback} from 'react';
 import {setItem, getItem} from 'service/PersistedObjectStorage';
 
-export type PersistedStateKey =
-  | 'network'
-  | 'accounts'
-  | 'theme'
-  | 'selected_push_topics';
+export type PersistedStateKey = 'network' | 'accounts' | 'theme' | 'selected_push_topics';
 
-export function usePersistedState<T>(
-  key: PersistedStateKey,
-): [T | undefined, (newState: T) => void];
-export function usePersistedState<T>(
-  key: PersistedStateKey,
-  initialState: T,
-): [T, (newState: T) => void];
+export function usePersistedState<T>(key: PersistedStateKey): [T | undefined, (newState: T) => void];
+export function usePersistedState<T>(key: PersistedStateKey, initialState: T): [T, (newState: T) => void];
 
 export function usePersistedState<T>(
   key: PersistedStateKey,

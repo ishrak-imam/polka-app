@@ -1,10 +1,5 @@
 import React from 'react';
-import {
-  useTheme as useRNPaperTheme,
-  Provider as RNPaperProvider,
-  DarkTheme,
-  LightTheme,
-} from 'rnpaper';
+import {useTheme as useRNPaperTheme, Provider as RNPaperProvider, DarkTheme, LightTheme} from 'rnpaper';
 import {usePersistedState} from 'hooks/usePersistedState';
 import {Platform, StatusBar} from 'react-native';
 
@@ -37,16 +32,11 @@ export function ThemeProvider({children}: PropTypes) {
     }
   }, [theme]);
 
-  const value = React.useMemo(
-    () => ({theme, toggleTheme}),
-    [theme, toggleTheme],
-  );
+  const value = React.useMemo(() => ({theme, toggleTheme}), [theme, toggleTheme]);
 
   return (
     <ThemeContext.Provider value={value}>
-      <RNPaperProvider theme={value.theme === 'dark' ? DarkTheme : LightTheme}>
-        {children}
-      </RNPaperProvider>
+      <RNPaperProvider theme={value.theme === 'dark' ? DarkTheme : LightTheme}>{children}</RNPaperProvider>
     </ThemeContext.Provider>
   );
 }

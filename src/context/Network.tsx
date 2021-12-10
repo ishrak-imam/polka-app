@@ -48,10 +48,7 @@ type PropTypes = {
 };
 
 export function NetworkProvider({children}: PropTypes) {
-  const [currentNetwork, setCurrentNetwork] = usePersistedState<Network>(
-    'network',
-    PolkadotNetwork,
-  );
+  const [currentNetwork, setCurrentNetwork] = usePersistedState<Network>('network', PolkadotNetwork);
 
   const value = React.useMemo(
     () => ({
@@ -63,9 +60,7 @@ export function NetworkProvider({children}: PropTypes) {
     [currentNetwork, setCurrentNetwork],
   );
 
-  return (
-    <NetworkContext.Provider value={value}>{children}</NetworkContext.Provider>
-  );
+  return <NetworkContext.Provider value={value}>{children}</NetworkContext.Provider>;
 }
 
 export function useNetwork() {

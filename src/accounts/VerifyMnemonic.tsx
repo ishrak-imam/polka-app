@@ -38,10 +38,8 @@ export function VerifyMnemonic({navigation, route}: ScreenProps) {
   }, [selectedMnemonic, mnemonic]);
 
   const onSelect = (selectedWord: Word) => {
-    const wordsSelected = words.map(word =>
-      word.id === selectedWord.id
-        ? {...word, isSelected: !word.isSelected}
-        : word,
+    const wordsSelected = words.map((word) =>
+      word.id === selectedWord.id ? {...word, isSelected: !word.isSelected} : word,
     );
     setWords(wordsSelected);
 
@@ -49,30 +47,22 @@ export function VerifyMnemonic({navigation, route}: ScreenProps) {
       ? `${selectedMnemonic} ${selectedWord.text}`
       : selectedMnemonic
           .split(' ')
-          .filter(word => word !== selectedWord.text)
+          .filter((word) => word !== selectedWord.text)
           .join(' ');
 
     setSelectedMnemonic(mnemonicSelected.trim());
   };
 
   const onReset = () => {
-    setWords(words.map(word => ({...word, isSelected: false})));
+    setWords(words.map((word) => ({...word, isSelected: false})));
     setSelectedMnemonic(' ');
   };
 
   return (
     <Layout style={styles.layout}>
-      <Caption>
-        {'Verify your mnemonic by selecting the words in the correct order.'}
-      </Caption>
+      <Caption>{'Verify your mnemonic by selecting the words in the correct order.'}</Caption>
       <Padder scale={1} />
-      <TextInput
-        style={styles.mnemonicInput}
-        mode="outlined"
-        disabled
-        value={selectedMnemonic}
-        multiline
-      />
+      <TextInput style={styles.mnemonicInput} mode="outlined" disabled value={selectedMnemonic} multiline />
       <Padder scale={2} />
       <WordSelector words={words} onSelect={onSelect} />
       <Padder scale={2} />
@@ -101,7 +91,7 @@ function WordSelector({words, onSelect}: WordSelectorProps) {
 
   return (
     <View style={styles.words}>
-      {words.map(word => (
+      {words.map((word) => (
         <View style={styles.wordButton} key={word.id}>
           <Button
             color={`${word.isSelected ? colors.primary : colors.accent}`}
