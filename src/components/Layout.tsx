@@ -18,7 +18,8 @@ export function Layout({children, style, noTopEdges = true}: PropTypes) {
         ...styles.safeView,
         ...style,
         backgroundColor: colors.background,
-      }}>
+      }}
+    >
       {children}
     </SafeAreaView>
   );

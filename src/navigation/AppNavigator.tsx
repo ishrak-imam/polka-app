@@ -40,7 +40,8 @@ function AccountsNavigator() {
             {...rest}
           />
         ),
-      }}>
+      }}
+    >
       <AccountsStack.Screen
         name={routeKeys.myAccounts}
         component={MyAccounts}
@@ -80,7 +81,8 @@ function AddressBookNavigator() {
             {...rest}
           />
         ),
-      }}>
+      }}
+    >
       <AddressBookStack.Screen
         name={routeKeys.addressBook}
         component={AddressBook}
@@ -102,7 +104,8 @@ function NetworkNavigator() {
             {...rest}
           />
         ),
-      }}>
+      }}
+    >
       <NetworkStack.Screen name={routeKeys.explorer} component={Explorer} />
     </NetworkStack.Navigator>
   );
@@ -121,7 +124,8 @@ function StakingNavigator() {
             {...rest}
           />
         ),
-      }}>
+      }}
+    >
       <StakingStack.Screen name={routeKeys.staking} component={Staking} />
     </StakingStack.Navigator>
   );
@@ -132,7 +136,8 @@ function DrawerNavigator() {
   return (
     <Drawer.Navigator
       drawerContent={props => <DrawerScreen {...props} />}
-      screenOptions={{headerShown: false}}>
+      screenOptions={{headerShown: false}}
+    >
       <Drawer.Screen
         name={routeKeys.accountsNavigator}
         component={AccountsNavigator}

@@ -111,7 +111,8 @@ export function ImportJson({navigation}: ScreenProps) {
                   .catch((_: Error) => {
                     setJsonContent(undefined);
                   })
-              }>
+              }
+            >
               <Caption>Pick the json file</Caption>
             </Button>
             <Padder scale={1} />

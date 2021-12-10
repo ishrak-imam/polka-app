@@ -50,7 +50,8 @@ export function Mnemonic({navigation}: ScreenProps) {
       <View style={styles.button}>
         <Button
           mode="outlined"
-          onPress={() => navigation.navigate(verifyMnemonic, {mnemonic})}>
+          onPress={() => navigation.navigate(verifyMnemonic, {mnemonic})}
+        >
           Next
         </Button>
       </View>
