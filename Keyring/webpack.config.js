@@ -1,10 +1,10 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const HtmlInlineScriptPlugin = require('html-inline-script-webpack-plugin');
-const TerserPlugin = require("terser-webpack-plugin");
+const TerserPlugin = require('terser-webpack-plugin');
 
 module.exports = {
-  mode: "production",
+  mode: 'production',
   entry: path.resolve(__dirname, './src/index.ts'),
   module: {
     rules: [
@@ -33,8 +33,8 @@ module.exports = {
     fallback: {
       buffer: require.resolve('buffer/'),
       crypto: require.resolve('crypto-browserify/'),
-      stream: require.resolve('stream-browserify/')
-    }
+      stream: require.resolve('stream-browserify/'),
+    },
   },
   output: {
     filename: 'bundle.js',
@@ -43,8 +43,8 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: 'Webview Keyring',
-      filename: 'keyring.html'
+      filename: 'keyring.html',
     }),
     new HtmlInlineScriptPlugin(),
-  ]
+  ],
 };

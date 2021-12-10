@@ -123,11 +123,6 @@ export function AccountsProvider({children}: PropTypes) {
   };
 
   const rnPersistAccounts = (account: any) => {
-
-
-
-
-    
     setPersistedAccounts({
       ...persistedAccounts,
       [`account:${addressToHex(account.address)}`]: account,

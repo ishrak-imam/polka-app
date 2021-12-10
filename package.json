@@ -8,6 +8,7 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "./node_modules/.bin/eslint --ignore-path .gitignore --fix --ext .ts,.tsx .",
+    "prettier": "./node_modules/.bin/prettier --write --ignore-path .gitignore \"**/*.+(js|ts|tsx|json)\"",
     "check-types": "./node_modules/.bin/tsc",
     "nodeify": "./node_modules/.bin/rn-nodeify --install process,crypto,events,stream --hack --yarn",
     "postinstall": "yarn nodeify && yarn --cwd ./keyring && yarn --cwd ./keyring build"
@@ -100,8 +101,7 @@
   },
   "lint-staged": {
     "src/*.{ts,tsx}": [
-      "yarn lint",
-      "yarn check-types"
+      "yarn lint"
     ]
   }
 }
