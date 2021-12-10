@@ -14,8 +14,7 @@ export function Modal({visible, onDismiss, children}: ModalProps) {
       <RNPaperModal
         visible={visible}
         onDismiss={onDismiss}
-        contentContainerStyle={styles.modal}
-      >
+        contentContainerStyle={styles.modal}>
         {children}
       </RNPaperModal>
     </Portal>

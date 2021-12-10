@@ -325,8 +325,7 @@ export function AccountsProvider({children}: PropTypes) {
             restoreAccount,
             toggleFavorite,
             validateMnemonic,
-          }}
-        >
+          }}>
           {children}
         </AccountsContext.Provider>
       ) : (

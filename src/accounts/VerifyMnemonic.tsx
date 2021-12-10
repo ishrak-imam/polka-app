@@ -83,8 +83,7 @@ export function VerifyMnemonic({navigation, route}: ScreenProps) {
         <Button
           mode="outlined"
           disabled={!isMnemonicVerified && !__DEV__}
-          onPress={() => navigation.navigate(createAccount, {mnemonic})}
-        >
+          onPress={() => navigation.navigate(createAccount, {mnemonic})}>
           Next
         </Button>
       </View>
@@ -107,8 +106,7 @@ function WordSelector({words, onSelect}: WordSelectorProps) {
           <Button
             color={`${word.isSelected ? colors.primary : colors.accent}`}
             onPress={() => onSelect(word)}
-            mode="contained"
-          >
+            mode="contained">
             {word.text}
           </Button>
         </View>
