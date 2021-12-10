@@ -28,7 +28,7 @@ type PersistedAccount = {
 type PersistedAccounts = Record<string, PersistedAccount>;
 
 export type Account = {
-  address: number;
+  address: string;
   name: string;
   isFavorite: boolean;
   isExternal: boolean;
@@ -123,6 +123,11 @@ export function AccountsProvider({children}: PropTypes) {
   };
 
   const rnPersistAccounts = (account: any) => {
+
+
+
+
+    
     setPersistedAccounts({
       ...persistedAccounts,
       [`account:${addressToHex(account.address)}`]: account,
