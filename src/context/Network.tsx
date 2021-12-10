@@ -54,7 +54,12 @@ export function NetworkProvider({children}: PropTypes) {
   );
 
   const value = React.useMemo(
-    () => ({currentNetwork, polkadotNetwork: PolkadotNetwork, kusamaNetwork: KusamaNetwork, select: setCurrentNetwork}),
+    () => ({
+      currentNetwork,
+      polkadotNetwork: PolkadotNetwork,
+      kusamaNetwork: KusamaNetwork,
+      select: setCurrentNetwork,
+    }),
     [currentNetwork, setCurrentNetwork],
   );
 

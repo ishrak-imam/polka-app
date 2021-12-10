@@ -28,7 +28,7 @@ type PersistedAccount = {
 type PersistedAccounts = Record<string, PersistedAccount>;
 
 export type Account = {
-  address: string;
+  address: number;
   name: string;
   isFavorite: boolean;
   isExternal: boolean;

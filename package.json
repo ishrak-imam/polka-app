@@ -100,7 +100,8 @@
   },
   "lint-staged": {
     "src/*.{ts,tsx}": [
-      "yarn lint"
+      "yarn lint",
+      "yarn check-types"
     ]
   }
 }

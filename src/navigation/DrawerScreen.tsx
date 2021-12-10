@@ -14,21 +14,23 @@ import {
   stakingNavigator,
 } from './routeKeys';
 import {useTheme} from 'context/Theme';
-import { useNetwork } from 'context/Network';
+import {useNetwork} from 'context/Network';
 
 export function DrawerScreen({navigation}: DrawerContentComponentProps) {
-  const {currentNetwork, polkadotNetwork, kusamaNetwork, select} = useNetwork()
+  const {currentNetwork, polkadotNetwork, kusamaNetwork, select} = useNetwork();
   const {theme, toggleTheme} = useTheme();
   const [activeScreen, setActiveScreen] = React.useState<string>(myAccounts);
 
   const onSwitchNetwork = () => {
-    select(currentNetwork.key === 'polkadot' ? kusamaNetwork : polkadotNetwork)
-  }
+    select(currentNetwork.key === 'polkadot' ? kusamaNetwork : polkadotNetwork);
+  };
 
   return (
     <Layout style={styles.layout} noTopEdges={false}>
       <View style={styles.header}>
-        <Subheading style={{color: currentNetwork.color}}>{currentNetwork.name}</Subheading>
+        <Subheading style={{color: currentNetwork.color}}>
+          {currentNetwork.name}
+        </Subheading>
       </View>
       <Divider />
       <ScrollView>
@@ -82,7 +84,9 @@ export function DrawerScreen({navigation}: DrawerContentComponentProps) {
           />
           <Drawer.Item
             onPress={onSwitchNetwork}
-            label={`Switch to ${currentNetwork.key === 'polkadot' ? 'Kusama' : 'Polkadot'}`}
+            label={`Switch to ${
+              currentNetwork.key === 'polkadot' ? 'Kusama' : 'Polkadot'
+            }`}
             icon="server-network"
           />
         </Drawer.Section>
@@ -100,6 +104,6 @@ const styles = StyleSheet.create({
     height: 50,
     // backgroundColor: 'green',
     justifyContent: 'center',
-    paddingLeft: 15
+    paddingLeft: 15,
   },
 });
