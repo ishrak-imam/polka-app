@@ -16,6 +16,7 @@
   "dependencies": {
     "@polkadot/api": "6.7.2",
     "@polkadot/reactnative-identicon": "^0.87.5",
+    "@react-native-clipboard/clipboard": "^1.9.0",
     "@react-navigation/drawer": "^6.1.8",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",

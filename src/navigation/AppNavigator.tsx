@@ -20,6 +20,7 @@ import {VerifyMnemonic} from 'accounts/VerifyMnemonic';
 import {CreateAccount} from 'accounts/CreateAccount';
 import {ImportSeed} from 'accounts/ImportSeed';
 import {ImportJson} from 'accounts/ImportJson';
+import {AccountDetail} from 'accounts/AccountDetail';
 import {Explorer} from 'network/Explorer';
 import {Staking} from 'network/Staking';
 import {AppBar} from 'rnpaper/AppBar';
@@ -39,6 +40,7 @@ function AccountsNavigator() {
       <AccountsStack.Screen name={routeKeys.createAccount} component={CreateAccount} />
       <AccountsStack.Screen name={routeKeys.importSeed} component={ImportSeed} />
       <AccountsStack.Screen name={routeKeys.importJson} component={ImportJson} />
+      <AccountsStack.Screen name={routeKeys.accountDetail} component={AccountDetail} />
     </AccountsStack.Navigator>
   );
 }

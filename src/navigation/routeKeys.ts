@@ -5,6 +5,7 @@ export const verifyMnemonic = 'Verify Mnemonic' as const;
 export const createAccount = 'Create Account' as const;
 export const importSeed = 'Import Seed' as const;
 export const importJson = 'Import Json' as const;
+export const accountDetail = 'Account Detail' as const;
 
 // address book
 export const addressBook = 'Address Book' as const;
