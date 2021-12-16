@@ -113,7 +113,7 @@ const AddExternalAccountModal = ({visible, setModalVisible, addExternalAccount}:
             onChangeText={(text) => setAddress(text)}
             error={Boolean(error)}
           />
-          <View style={{height: 30}}>{error ? <ErrorText>{error}</ErrorText> : null}</View>
+          <View style={styles.errorText}>{error ? <ErrorText>{error}</ErrorText> : null}</View>
         </Card.Content>
         <Card.Actions style={styles.cardActions}>
           <Button onPress={onReset}>Cancel</Button>
@@ -221,5 +221,8 @@ const styles = StyleSheet.create({
   },
   cardActions: {
     justifyContent: 'flex-end',
+  },
+  errorText: {
+    height: 30,
   },
 });
