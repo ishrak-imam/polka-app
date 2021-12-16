@@ -10,6 +10,6 @@ jobs:
   lint-and-ts-check:
     runs-on: macos-latest
     steps:
-      uses: actions/checkout@v2
-      name: lint-and-ts-check
-      run: yarn && yarn validate
+      - uses: actions/checkout@v2
+      - name: lint-and-ts-check
+        run: yarn && yarn validate
