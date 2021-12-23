@@ -11,7 +11,8 @@
     "prettier": "./node_modules/.bin/prettier --write --ignore-path .gitignore \"**/*.+(js|ts|tsx|json)\"",
     "check-types": "./node_modules/.bin/tsc",
     "nodeify": "./node_modules/.bin/rn-nodeify --install process,crypto,events,stream --hack --yarn",
-    "postinstall": "yarn nodeify && yarn --cwd ./keyring && yarn --cwd ./keyring build",
+    "postinstall": "yarn nodeify && yarn build-keyring",
+    "build-keyring": "yarn --cwd ./keyring && yarn --cwd ./keyring build",
     "validate-keyring": "yarn --cwd ./keyring lint && yarn --cwd ./keyring check-types",
     "validate": "npm-run-all --parallel check-types lint validate-keyring"
   },
