@@ -275,9 +275,9 @@ PODS:
   - React-jsinspector (0.66.3)
   - React-logger (0.66.3):
     - glog
-  - react-native-document-picker (7.1.1):
+  - react-native-document-picker (7.1.3):
     - React-Core
-  - react-native-mmkv (1.5.3):
+  - react-native-mmkv (1.5.4):
     - MMKV
     - React-Core
   - react-native-randombytes (3.6.1):
@@ -357,7 +357,7 @@ PODS:
     - React
   - RNGestureHandler (1.10.3):
     - React-Core
-  - RNReanimated (2.2.4):
+  - RNReanimated (2.3.1):
     - DoubleConversion
     - FBLazyVector
     - FBReactNativeSpec
@@ -383,10 +383,9 @@ PODS:
     - React-RCTNetwork
     - React-RCTSettings
     - React-RCTText
-    - React-RCTVibration
     - ReactCommon/turbomodule/core
     - Yoga
-  - RNScreens (3.9.0):
+  - RNScreens (3.10.1):
     - React-Core
     - React-RCTImage
   - RNSVG (12.1.1):
@@ -602,8 +601,8 @@ SPEC CHECKSUMS:
   React-jsiexecutor: 433a691aee158533a6a6ee9c86cb4a1684fa2853
   React-jsinspector: d9c8eb0b53f0da206fed56612b289fec84991157
   React-logger: e522e76fa3e9ec3e7d7115b49485cc065cf4ae06
-  react-native-document-picker: f4cc4df2eff8c9015d862a59bdaef11a153f1292
-  react-native-mmkv: 576edf2fb8e6a08f368357d8e02b2971abe08e0d
+  react-native-document-picker: ec07866a30707f23660c0f3ae591d669d3e89096
+  react-native-mmkv: 01fb2fcc0853b25607bd35c9ce132e73756df52b
   react-native-randombytes: 421f1c7d48c0af8dbcd471b0324393ebf8fe7846
   react-native-safe-area-context: 584dc04881deb49474363f3be89e4ca0e854c057
   react-native-webview: e89bf2dba26a04cda967814df3ed1be99f291233
@@ -622,8 +621,8 @@ SPEC CHECKSUMS:
   RNCClipboard: 99fc8ad669a376b756fbc8098ae2fd05c0ed0668
   RNFS: 3ab21fa6c56d65566d1fb26c2228e2b6132e5e32
   RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
-  RNReanimated: 65583befd5706cc9c86ae9a081786181ced37b93
-  RNScreens: 4d79118be80f79fa1f4aa131909a1d6e86280af3
+  RNReanimated: da3860204e5660c0dd66739936732197d359d753
+  RNScreens: 522705f2e5c9d27efb17f24aceb2bf8335bc7b8e
   RNSVG: 551acb6562324b1d52a4e0758f7ca0ec234e278f
   RNVectorIcons: 4143ba35feebab8fdbe6bc43d1e776b393d47ac8
   Yoga: 32a18c0e845e185f4a2a66ec76e1fd1f958f22fa

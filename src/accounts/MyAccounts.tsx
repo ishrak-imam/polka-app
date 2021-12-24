@@ -179,30 +179,29 @@ const Buttons = ({navigation, setModalVisible}: ButtonsProps) => {
         actions={[
           {
             icon: 'import',
-            label: 'Import Seed',
+            label: 'Import account from Seed',
             onPress: () => {
               navigation.navigate(importSeed);
             },
           },
           {
             icon: 'code-json',
-            label: 'Import Json',
+            label: 'Import account from json',
             onPress: () => {
               navigation.navigate(importJson);
             },
           },
           {
-            icon: 'plus',
-            label: 'Add External Account',
+            icon: 'location-exit',
+            label: 'Add external account',
             onPress: () => {
               setModalVisible(true);
             },
           },
           {
-            icon: 'key-plus',
-            label: 'Generate New Seed',
+            icon: 'account-key',
+            label: 'Create new account',
             onPress: () => navigation.navigate(mnemonic),
-            small: false,
           },
         ]}
         onStateChange={onStateChange}
