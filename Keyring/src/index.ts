@@ -143,6 +143,17 @@ cryptoWaitReady().then(function () {
         break;
       }
 
+      case 'FORGET_ACCOUNT': {
+        keyring.forgetAccount(payload.address);
+        window.ReactNativeWebView.postMessage(
+          JSON.stringify({
+            type: 'FORGET_ACCOUNT',
+            payload: {address: payload.address},
+          }),
+        );
+        break;
+      }
+
       case 'CREATE_ACCOUNT': {
         const {address} = keyring.createFromUri(payload.mnemonic);
         window.ReactNativeWebView.postMessage(

@@ -59,6 +59,7 @@ type RestoreAccountPayload = {
 };
 
 type AccountsContext = {
+  isLoading: boolean;
   accounts: Account[];
   setCallback: (cb: (data: any) => void) => void;
   generateMnemonic: () => void;
@@ -66,11 +67,13 @@ type AccountsContext = {
   createAccount: (mnemonic: string) => void;
   addAccount: (payload: AddAccountPayload) => void;
   addExternalAccount: (payload: AddExternalAccountPayload) => void;
+  forgetAccount: (address: string) => void;
   restoreAccount: (payload: RestoreAccountPayload) => void;
   toggleFavorite: (address: string) => void;
 };
 
 const AccountsContext = React.createContext<AccountsContext>({
+  isLoading: false,
   accounts: [],
   setCallback: () => undefined,
   generateMnemonic: () => undefined,
@@ -78,6 +81,7 @@ const AccountsContext = React.createContext<AccountsContext>({
   createAccount: () => undefined,
   addAccount: () => undefined,
   addExternalAccount: () => undefined,
+  forgetAccount: () => undefined,
   toggleFavorite: () => undefined,
   restoreAccount: () => undefined,
 });
@@ -86,8 +90,8 @@ type PropTypes = {
   children: React.ReactNode;
 };
 
-function addressToHex(address: string): string {
-  return u8aToHex(decodeAddress(address, true));
+function getAccountKey(address: string): string {
+  return `account:${u8aToHex(decodeAddress(address, true))}`;
 }
 
 async function loadHtml(setHtml: (html: string) => void) {
@@ -102,6 +106,7 @@ export function AccountsProvider({children}: PropTypes) {
   const {currentNetwork} = useNetwork();
   const [accounts, setAccounts] = React.useState<Account[]>([]);
   const [persistedAccounts, setPersistedAccounts] = usePersistedState<PersistedAccounts>('accounts', {});
+  const [isLoading, setIsLoading] = React.useState(false);
 
   const prepareAccounts = (keyringAccounts: any) => {
     setAccounts(
@@ -124,12 +129,12 @@ export function AccountsProvider({children}: PropTypes) {
   const rnPersistAccounts = (account: any) => {
     setPersistedAccounts({
       ...persistedAccounts,
-      [`account:${addressToHex(account.address)}`]: account,
+      [getAccountKey(account.address)]: account,
     });
   };
 
   const toggleFavoriteRnPersistedAccount = (address: string) => {
-    const key = `account:${addressToHex(address)}`;
+    const key = getAccountKey(address);
     setPersistedAccounts({
       ...persistedAccounts,
       [key]: {
@@ -142,12 +147,19 @@ export function AccountsProvider({children}: PropTypes) {
     });
   };
 
+  const deleteRnPersistedAccount = (address: string) => {
+    const key = getAccountKey(address);
+    delete persistedAccounts[key];
+    setPersistedAccounts(persistedAccounts);
+  };
+
   const onMessage = (event: WebViewMessageEvent) => {
     const data = JSON.parse(event.nativeEvent.data);
     const {type, payload} = data;
 
     switch (type) {
       case 'GET_PAIRS': {
+        setIsLoading(false);
         prepareAccounts(payload.pairs);
         break;
       }
@@ -160,8 +172,14 @@ export function AccountsProvider({children}: PropTypes) {
         break;
       }
 
-      case 'TOGGLE_FAVORITE': {
+      case 'FORGET_ACCOUNT': {
+        deleteRnPersistedAccount(payload.address);
         getPairs();
+        break;
+      }
+
+      case 'TOGGLE_FAVORITE': {
+        getPairs(false);
         toggleFavoriteRnPersistedAccount(payload.address);
       }
     }
@@ -211,7 +229,10 @@ export function AccountsProvider({children}: PropTypes) {
     );
   };
 
-  const getPairs = () => {
+  const getPairs = (needsLoading: boolean = true) => {
+    if (needsLoading) {
+      setIsLoading(needsLoading);
+    }
     webviewRef.current.postMessage(
       JSON.stringify({
         type: 'GET_PAIRS',
@@ -250,6 +271,15 @@ export function AccountsProvider({children}: PropTypes) {
       JSON.stringify({
         type: 'ADD_EXTERNAL_ACCOUNT',
         payload,
+      }),
+    );
+  };
+
+  const forgetAccount = (address: string) => {
+    webviewRef.current.postMessage(
+      JSON.stringify({
+        type: 'FORGET_ACCOUNT',
+        payload: {address},
       }),
     );
   };
@@ -315,12 +345,14 @@ export function AccountsProvider({children}: PropTypes) {
       {isWebviewLoaded ? (
         <AccountsContext.Provider
           value={{
+            isLoading,
             accounts,
             setCallback,
             generateMnemonic,
             createAccount,
             addAccount,
             addExternalAccount,
+            forgetAccount,
             restoreAccount,
             toggleFavorite,
             validateMnemonic,

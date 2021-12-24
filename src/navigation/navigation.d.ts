@@ -1,3 +1,4 @@
+import type {Account} from 'context/Accounts';
 import {
   myAccounts,
   addressBook,
@@ -6,6 +7,7 @@ import {
   createAccount,
   importSeed,
   importJson,
+  accountDetail,
   explorer,
   staking,
   accountsNavigator,
@@ -21,6 +23,7 @@ type AccountsStackParamList = {
   [createAccount]: {mnemonic: string};
   [importSeed]: undefined;
   [importJson]: undefined;
+  [accountDetail]: {account: Account};
 };
 
 type AddressBookStackParamList = {

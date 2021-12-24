@@ -11,7 +11,6 @@ import {
   Caption,
   Modal,
   Card,
-  Padder,
   Paragraph,
   TextInput,
   ErrorText,
@@ -23,9 +22,10 @@ import {stringShorten} from '@polkadot/util';
 import {StyleSheet, FlatList} from 'react-native';
 import {useAccounts, Account, AddExternalAccountPayload} from 'context/Accounts';
 import {Layout} from 'components/Layout';
-import {importJson, importSeed, mnemonic} from 'navigation/routeKeys';
+import {accountDetail, importJson, importSeed, mnemonic} from 'navigation/routeKeys';
 import {isAddressValid} from 'utils';
 import {useNetwork} from 'context/Network';
+import {LoadingView} from 'components/LoadingView';
 
 type ScreenProps = {
   navigation: NavigationProp<AccountsStackParamList>;
@@ -33,17 +33,27 @@ type ScreenProps = {
 
 export function MyAccounts({navigation}: ScreenProps) {
   const theme = useTheme();
-  const {accounts, addExternalAccount, toggleFavorite} = useAccounts();
+  const {isLoading, accounts, addExternalAccount, toggleFavorite} = useAccounts();
 
   const [isVisible, setIsVisible] = React.useState(false);
+
+  const toAccountDetail = (account: Account) => {
+    navigation.navigate(accountDetail, {account});
+  };
 
   return (
     <Provider theme={theme}>
       <Layout style={styles.layout}>
-        <FlatList
-          data={accounts}
-          renderItem={({item: account}) => <AccountItem account={account} toggleFavorite={toggleFavorite} />}
-        />
+        {isLoading ? (
+          <LoadingView />
+        ) : (
+          <FlatList
+            data={accounts}
+            renderItem={({item: account}) => (
+              <AccountItem onPress={toAccountDetail} account={account} toggleFavorite={toggleFavorite} />
+            )}
+          />
+        )}
       </Layout>
       <Buttons navigation={navigation} setModalVisible={setIsVisible} />
       <AddExternalAccountModal
@@ -91,28 +101,26 @@ const AddExternalAccountModal = ({visible, setModalVisible, addExternalAccount}:
 
   return (
     <Modal visible={visible} onDismiss={onReset}>
-      <Card style={styles.modalCard}>
-        <Paragraph>Add external account</Paragraph>
-        <Padder scale={0.5} />
-        <TextInput
-          multiline
-          numberOfLines={4}
-          mode="outlined"
-          placeholder="Paste address here, e.g. 167r...14h"
-          value={address}
-          onChangeText={(text) => setAddress(text)}
-          error={Boolean(error)}
-        />
-        {error ? <ErrorText>{error}</ErrorText> : null}
-        <Padder scale={2} />
-        <View style={styles.buttons}>
-          <Button mode="outlined" onPress={onReset}>
-            Cancel
-          </Button>
-          <Button disabled={isDisabled} mode="contained" onPress={onAddAccount}>
+      <Card>
+        <Card.Title title={<Paragraph>{'Add external account'}</Paragraph>} />
+        <Card.Content>
+          <TextInput
+            multiline
+            numberOfLines={3}
+            mode="outlined"
+            placeholder="Paste address here, e.g. 167r...14h"
+            value={address}
+            onChangeText={(text) => setAddress(text)}
+            error={Boolean(error)}
+          />
+          <View style={styles.errorText}>{error ? <ErrorText>{error}</ErrorText> : null}</View>
+        </Card.Content>
+        <Card.Actions style={styles.cardActions}>
+          <Button onPress={onReset}>Cancel</Button>
+          <Button disabled={isDisabled} onPress={onAddAccount}>
             Add
           </Button>
-        </View>
+        </Card.Actions>
       </Card>
     </Modal>
   );
@@ -121,13 +129,17 @@ const AddExternalAccountModal = ({visible, setModalVisible, addExternalAccount}:
 type AccountItemProps = {
   account: Account;
   toggleFavorite: (address: string) => void;
+  onPress: (account: Account) => void;
 };
 
-const AccountItem = ({account, toggleFavorite}: AccountItemProps) => {
+const AccountItem = ({account, toggleFavorite, onPress}: AccountItemProps) => {
   const {colors} = useTheme();
 
   return (
     <List.Item
+      onPress={() => {
+        onPress(account);
+      }}
       title={<Caption>{account.isExternal ? 'External account' : account.name}</Caption>}
       left={() => (
         <View style={styles.justifyCenter}>
@@ -207,11 +219,10 @@ const styles = StyleSheet.create({
   justifyCenter: {
     justifyContent: 'center',
   },
-  modalCard: {
-    padding: 20,
+  cardActions: {
+    justifyContent: 'flex-end',
   },
-  buttons: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+  errorText: {
+    height: 30,
   },
 });

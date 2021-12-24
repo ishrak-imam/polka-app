@@ -11,11 +11,15 @@
     "prettier": "./node_modules/.bin/prettier --write --ignore-path .gitignore \"**/*.+(js|ts|tsx|json)\"",
     "check-types": "./node_modules/.bin/tsc",
     "nodeify": "./node_modules/.bin/rn-nodeify --install process,crypto,events,stream --hack --yarn",
-    "postinstall": "yarn nodeify && yarn --cwd ./keyring && yarn --cwd ./keyring build"
+    "postinstall": "yarn nodeify && yarn build-keyring",
+    "build-keyring": "yarn --cwd ./keyring && yarn --cwd ./keyring build",
+    "validate-keyring": "yarn --cwd ./keyring lint && yarn --cwd ./keyring check-types",
+    "validate": "npm-run-all --parallel check-types lint validate-keyring"
   },
   "dependencies": {
     "@polkadot/api": "6.7.2",
     "@polkadot/reactnative-identicon": "^0.87.5",
+    "@react-native-clipboard/clipboard": "^1.9.0",
     "@react-navigation/drawer": "^6.1.8",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
@@ -57,6 +61,7 @@
     "jest": "^26.6.3",
     "lint-staged": "^12.1.2",
     "metro-react-native-babel-preset": "^0.66.2",
+    "npm-run-all": "^4.1.5",
     "react-test-renderer": "17.0.2",
     "rn-nodeify": "^10.3.0",
     "typescript": "^4.4.4"
@@ -101,7 +106,8 @@
   },
   "lint-staged": {
     "src/*.{ts,tsx}": [
-      "yarn lint"
+      "yarn lint",
+      "yarn --cwd ./keyring lint"
     ]
   }
 }
