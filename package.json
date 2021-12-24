@@ -11,13 +11,13 @@
     "prettier": "./node_modules/.bin/prettier --write --ignore-path .gitignore \"**/*.+(js|ts|tsx|json)\"",
     "check-types": "./node_modules/.bin/tsc",
     "nodeify": "./node_modules/.bin/rn-nodeify --install process,crypto,events,stream --hack --yarn",
-    "postinstall": "yarn nodeify && yarn build-keyring",
+    "postinstall": "yarn nodeify && patch-package && yarn build-keyring",
     "build-keyring": "yarn --cwd ./keyring && yarn --cwd ./keyring build",
     "validate-keyring": "yarn --cwd ./keyring lint && yarn --cwd ./keyring check-types",
     "validate": "npm-run-all --parallel check-types lint validate-keyring"
   },
   "dependencies": {
-    "@polkadot/api": "6.7.2",
+    "@polkadot/api": "^7.0.2",
     "@polkadot/reactnative-identicon": "^0.87.5",
     "@react-native-clipboard/clipboard": "^1.9.0",
     "@react-navigation/drawer": "^6.1.8",
@@ -26,6 +26,7 @@
     "events": "^1.0.0",
     "fast-text-encoding": "^1.0.3",
     "lodash": "^4.17.21",
+    "patch-package": "^6.4.7",
     "process": "^0.11.0",
     "react": "17.0.2",
     "react-native": "0.66.3",
@@ -67,11 +68,7 @@
     "typescript": "^4.4.4"
   },
   "resolutions": {
-    "@types/react": "^17",
-    "@polkadot/types": "6.7.2",
-    "@polkadot/keyring": "7.8.2",
-    "@polkadot/util": "7.8.2",
-    "@polkadot/util-crypto": "7.8.2"
+    "@types/react": "^17"
   },
   "jest": {
     "preset": "react-native",
