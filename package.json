@@ -11,7 +11,7 @@
     "prettier": "./node_modules/.bin/prettier --write --ignore-path .gitignore \"**/*.+(js|ts|tsx|json)\"",
     "check-types": "./node_modules/.bin/tsc",
     "nodeify": "./node_modules/.bin/rn-nodeify --install process,crypto,events,stream --hack --yarn",
-    "postinstall": "yarn nodeify && yarn build-keyring",
+    "postinstall": "yarn nodeify && patch-package && yarn build-keyring",
     "build-keyring": "yarn --cwd ./keyring && yarn --cwd ./keyring build",
     "validate-keyring": "yarn --cwd ./keyring lint && yarn --cwd ./keyring check-types",
     "validate": "npm-run-all --parallel check-types lint validate-keyring"
@@ -26,6 +26,7 @@
     "events": "^1.0.0",
     "fast-text-encoding": "^1.0.3",
     "lodash": "^4.17.21",
+    "patch-package": "^6.4.7",
     "process": "^0.11.0",
     "react": "17.0.2",
     "react-native": "0.66.3",
