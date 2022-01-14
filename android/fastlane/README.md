@@ -13,10 +13,10 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 # Available Actions
 
-### beta
+### alpha
 
 ```sh
-[bundle exec] fastlane beta
+[bundle exec] fastlane alpha
 ```
 
 

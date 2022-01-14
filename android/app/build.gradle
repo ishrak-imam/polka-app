@@ -135,7 +135,7 @@ android {
         applicationId "com.polkaapp"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
+        versionCode 3
         versionName "1.0"
     }
     splits {
@@ -153,6 +153,14 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if (project.hasProperty('POLKAAPP_UPLOAD_STORE_FILE')) {
+                storeFile file(POLKAAPP_UPLOAD_STORE_FILE)
+                storePassword POLKAAPP_UPLOAD_STORE_PASSWORD
+                keyAlias POLKAAPP_UPLOAD_KEY_ALIAS
+                keyPassword POLKAAPP_UPLOAD_KEY_PASSWORD
+            }
+        }
     }
     buildTypes {
         debug {
@@ -166,7 +174,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
