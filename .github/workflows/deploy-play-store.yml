@@ -1,8 +1,11 @@
 name: Deploy to Play Store
 
 on:
-  push:
+  workflow_run:
+    workflows: ["Code style"]
     branches: [gh-actions]
+    types: 
+      - completed
 
 jobs:
   fastlane-deploy:
