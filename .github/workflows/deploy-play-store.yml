@@ -6,7 +6,7 @@ on:
 
 jobs:
   fastlane-deploy:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - name: install packages
         uses: actions/checkout@v2
