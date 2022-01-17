@@ -2,12 +2,11 @@ name: Deploy to Play Store
 
 on:
   workflow_run:
-    workflows: ["Code style"]
-    branches: [gh-actions]
-    types: 
-      - completed
+    workflows: [Code-style]
+    types: [completed]
 
 jobs:
+  if: ${{ github.event.workflow_run.conclusion == 'success' }}
   fastlane-deploy:
     runs-on: ubuntu-latest
     steps:
