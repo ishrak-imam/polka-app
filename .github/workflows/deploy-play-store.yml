@@ -1,6 +1,8 @@
 name: Deploy to Play Store
 
 on:
+  push:
+    branches: [gh-actions]
   workflow_run:
     workflows: [Code-style]
     types: [completed]
