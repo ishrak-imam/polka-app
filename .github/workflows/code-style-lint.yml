@@ -2,9 +2,9 @@ name: Code style
 
 on:
   push:
-    branches: [develop]
+    branches: [gh-actions]
   pull_request:
-    branches: [develop]
+    branches: [gh-actions]
 
 jobs:
   lint-and-ts-check:

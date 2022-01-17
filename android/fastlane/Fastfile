@@ -1,8 +1,10 @@
 lane :alpha do
   gradle(task: "clean")
-  increment_version_code(
-    gradle_file_path: "app/build.gradle",
-  )
+
+  version_codes = google_play_track_version_codes(track: 'alpha')
+  version_updated = version_codes[0].to_i + 1
+  increment_version_code(gradle_file_path: "./app/build.gradle", version_code: version_updated.to_i)
+
   gradle(
     task: 'bundle',
     build_type: 'Release'

@@ -1,0 +1,53 @@
+name: Deploy to Play Store
+
+on:
+  workflow_run:
+    workflows: [code-style-lint]
+    types:
+      - completed
+  # Enable manual run
+  workflow_dispatch:
+    inputs:
+      lane:
+        description: 'Fastlane lane to use (beta OR promote_to_production OR production)'
+        required: true
+        default: 'beta'
+  push:
+    branches: [gh-actions]
+
+jobs:
+  fastlane-deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      # Setup Ruby, Bundler, and Gemfile dependencies
+      - name: Setup Fastlane
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '2.6'
+          bundler-cache: true
+          working-directory: android
+      - name: Configure Keystore
+        run: |
+          echo "$PLAY_STORE_UPLOAD_KEY" | base64 --decode > app/polkaapp-upload-key.jks
+          echo "storeFile=polkaapp-upload-key.jks" >> key.properties
+          echo "keyAlias=$KEYSTORE_KEY_ALIAS" >> key.properties
+          echo "storePassword=$KEYSTORE_STORE_PASSWORD" >> key.properties
+          echo "keyPassword=$KEYSTORE_KEY_PASSWORD" >> key.properties
+        env:
+          # We need to encode polkaapp-upload-key.keystore to base64 and put its content to the secret in github
+          # use this command: openssl base64 < path_to_-upload-key.keystore | tr -d '\n' 
+          PLAY_STORE_UPLOAD_KEY: ${{ secrets.PLAY_STORE_UPLOAD_KEY }}
+          KEYSTORE_KEY_ALIAS: ${{ secrets.KEYSTORE_KEY_ALIAS }}
+          KEYSTORE_KEY_PASSWORD: ${{ secrets.KEYSTORE_KEY_PASSWORD }}
+          KEYSTORE_STORE_PASSWORD: ${{ secrets.KEYSTORE_STORE_PASSWORD }}
+        working-directory: android
+      # Build and deploy with Fastlane (by default, to beta track) 🚀.
+      # Naturally, promote_to_production only deploys.
+      - name: Build and Deploy
+        run: |
+          echo "$PLAY_STORE_CONFIG_JSON" > key.json
+          bundle exec fastlane ${{ github.event.inputs.lane || 'beta' }}
+        env:
+          PLAY_STORE_CONFIG_JSON: ${{ secrets.PLAY_STORE_CONFIG_JSON }}
+        working-directory: android
