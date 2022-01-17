@@ -8,6 +8,9 @@ jobs:
   fastlane-deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: install packages
+        uses: actions/checkout@v2
+      - run: yarn
       # Setup Ruby, Bundler, and Gemfile dependencies
       - name: Setup Fastlane
         uses: ruby/setup-ruby@v1
