@@ -8,7 +8,7 @@ on:
 
 jobs:
   lint-and-ts-check:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - name: lint-and-ts-check
