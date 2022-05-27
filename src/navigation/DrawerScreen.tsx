@@ -64,7 +64,7 @@ export function DrawerScreen({navigation}: DrawerContentComponentProps) {
           />
           <Drawer.Item
             label="Staking"
-            icon="buffer"
+            icon="bank"
             active={activeScreen === staking}
             onPress={() => {
               setActiveScreen(staking);
